@@ -1,5 +1,5 @@
 import React from 'react'; 
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {View, Text, TextInput, StyleSheet, Button} from 'react-native';
 import {NavigationButton} from 'atoms/index.js';
 
 const SetupScreen = ({navigation}) => {
@@ -24,9 +24,8 @@ const SetupScreen = ({navigation}) => {
   let input_props2 = {
     placeholder: 'Last Name'
   }
-
   let input_props3 = {
-    placeholder: 'Time'
+    placeholder: 'XX:XX'
   }
 
   return (
