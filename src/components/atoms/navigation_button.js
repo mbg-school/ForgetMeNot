@@ -12,7 +12,7 @@ const NavigationButton = (props) => {
   return (
     <TouchableOpacity 
     style={button_style}
-    onPress={() => {navigation.navigate(props.next_page)}}
+    onPress={() => {navigation.navigate(props.next_page, {name:props.previous_page})}}
     >
       <Text style={text_style}>{props.title}</Text>
     </TouchableOpacity>

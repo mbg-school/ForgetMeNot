@@ -1,5 +1,5 @@
 import React from 'react'; 
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import {NavigationButton, HorizontalLine} from 'atoms/index.js';
 import {Colors} from 'styles/index.js';
 
@@ -15,13 +15,15 @@ const ParseScreen = ({navigation}) => {
   let props1 = {
     title: 'Windows',
     style: button,
-    next_page: 'Setup'
+    next_page: 'Setup',
+    previous_page: 'Parse'
   };
 
   let props2 = {
     title: 'Car Alarm',
     style: button,
-    next_page: 'Setup'
+    next_page: 'Setup',
+    previous_page: 'Parse'
   };
 
   let line_props = {
@@ -31,16 +33,22 @@ const ParseScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>
-        Parse
-      </Text>
-      <HorizontalLine {...line_props} />
+      <Image 
+        source={require('assets/images/logo.png')}
+        style={styles.logo}
+      />
       <Text style={styles.body_text}>
         We will now set your OBDII to work with your car!
+        In this step you will give your OBDII the ability to roll down
+        your car windows and turn on your car alarm in the case of a 
+        emergency. First click the "Windows" button and then roll down your windows. 
+        Wait for confirmation and then do the exact same with your car alarm. Once
+        complete your OBDII will be almost completely ready to go!
       </Text>
-      <Text style={styles.instruction_text}> Roll down windows and press windows button </Text>
+      <HorizontalLine {...line_props} />
+      <Text style={styles.instruction_text}> Press button and then lower windows </Text>
       <NavigationButton {...props1} />
-      <Text style={styles.instruction_text}> Turn on car alarm and press car alarm button </Text>
+      <Text style={styles.instruction_text}> Press button and then turn on alarm </Text>
       <NavigationButton {...props2} />
     </View>
   );
@@ -49,18 +57,22 @@ const ParseScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.PRIMARY
+    backgroundColor: 'white'
   },
-  header: {
-    flex: .1,
-    alignSelf: 'baseline',
-    fontWeight: 'bold',
-    fontSize: 36
+  logo: {
+    flex: .2,
+    marginTop: -50,
+    marginBottom: 20,
+    height: 100,
+    width: 100
   },
   body_text: {
-    marginTop: 50,
+    flex: .3,
+    marginBottom: 20,
+    marginHorizontal: 20,
+    textAlign: 'center',
     fontSize: 16
   },
   instruction_text: {
@@ -71,7 +83,7 @@ const styles = StyleSheet.create({
   line_style: {
     marginHorizontal: 0,
     marginTop: 0,
-    width: 500
+    width: 350
   }
 })
 
