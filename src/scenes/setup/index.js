@@ -6,15 +6,23 @@ import {SaveData} from 'utils/storage';
 
 const SetupScreen = ({navigation}) => {
 
-  const {setUserData} = useContext(UserContext);
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        if (prev === 'Parse')
+          e.preventDefault();
+      })
+  );
+
+  const {userData, setUserData} = useContext(UserContext);
   const route = useRoute(); 
   const prev = route.params.name; 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [carMake, setCarMake] = useState('');
-  const [carModel, setCarModel] = useState(''); 
-  const [carYear, setCarYear] = useState('');
-  const [timeSetting, setTimeSetting] = useState('');
+  const [firstName, setFirstName] = useState(userData.firstName);
+  const [lastName, setLastName] = useState(userData.lastName);
+  const [carMake, setCarMake] = useState(userData.carMake);
+  const [carModel, setCarModel] = useState(userData.carModel); 
+  const [carYear, setCarYear] = useState(userData.carYear);
+  const [timeSetting, setTimeSetting] = useState(userData.timeSetting);
 
   let data = {
     firstName: firstName,
@@ -24,8 +32,6 @@ const SetupScreen = ({navigation}) => {
     carYear: carYear,
     timeSetting: timeSetting.toString(),
 };
-
-  let next_page = 'Home';
 
   let input_props1 = {
     placeholder: 'First Name',
@@ -65,17 +71,8 @@ const SetupScreen = ({navigation}) => {
     style: styles.text_input
   }
 
-  if (prev === 'Configuration') next_page = 'Configuration';
-
-  React.useEffect(
-    () =>
-      navigation.addListener('beforeRemove', (e) => {
-        if (prev === 'Parse')
-          e.preventDefault();
-      })
-  );
-
   const handlePress = () => {
+    checkValue();
     setUserData(data);
     SaveData(data);
     if (prev === 'Parse')
@@ -83,6 +80,14 @@ const SetupScreen = ({navigation}) => {
     else 
       navigation.navigate('Configuration');
   };
+
+  var value; 
+  const checkValue = () => {
+    for (value in data) {
+      if (data[value] === '') data[value] = userData[value];
+      console.log(data[value]);
+    }
+  }
 
   return (
     <View style = {styles.container}>

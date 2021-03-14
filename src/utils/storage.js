@@ -52,12 +52,18 @@ const saveTimeSetting = async (timesetting) => {
 }
 
 const SaveData = (data) => {
-  saveFirstName(data.firstName);
-  saveLastName(data.lastName);
-  saveCarMake(data.carMake);
-  saveCarModel(data.carModel);
-  saveCarYear(data.carYear)
-  saveTimeSetting(data.timeSetting);
+  if (data.firstName !== null && data.firstName !== '')
+    saveFirstName(data.firstName);
+  if (data.lastName !== null && data.lastName !== '')
+    saveLastName(data.lastName);
+  if (data.carMake !== null && data.carMake !== '')
+    saveCarMake(data.carMake);
+  if (data.carModel !== null && data.carModel !== '')
+    saveCarModel(data.carModel);
+  if (data.carYear !== null && data.carYear !== '')
+    saveCarYear(data.carYear)
+  if (data.timeSetting !== null && data.timeSetting !== '')
+    saveTimeSetting(data.timeSetting);
 }
 
 export {

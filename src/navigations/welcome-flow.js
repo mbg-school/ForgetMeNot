@@ -17,7 +17,6 @@ function StackNavigator() {
       <Stack.Screen name ="Parse" component={ParseScreen} />
       <Stack.Screen name ="Setup" component={SetupScreen} />
       <Stack.Screen name ="Home" component={GeneralFlowNavigator} />
-      <Stack.Screen name ="Configuration" component={GeneralFlowNavigator} />
     </Stack.Navigator>
   );
 }

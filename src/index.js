@@ -13,12 +13,14 @@ import {
 
 function App() { 
 
-  let first_name = '';
-  let last_name = '';
-  let car_make = '';
-  let car_model = '';
-  let car_year = '';
-  let time_setting = '';
+  const data = {
+    firstName: '',
+    lastName: '',
+    carMake: '',
+    carModel: '',
+    carYear: '',
+    timeSetting: ''
+  };
 
   const readData = async () => {
     try {
@@ -29,13 +31,15 @@ function App() {
         const carYear = await AsyncStorage.getItem(KEY_CAR_YEAR);
         const timeSetting = await AsyncStorage.getItem(KEY_TIME_SETTING);
 
-        if (firstName !== null) first_name = firstName;
-        if (lastName !== null) last_name = lastName;
-        if (carMake !== null) car_make = carMake;
-        if (carModel !== null) car_model = carModel;
-        if (carYear !== null) car_year = carYear;
-        if (timeSetting !== null) time_setting = timeSetting;
+        if (firstName !== null) data.firstName = firstName;
+        if (lastName !== null) data.lastName = lastName;
+        if (carMake !== null) data.carMake = carMake;
+        if (carModel !== null) data.carModel = carModel;
+        if (carYear !== null) data.carYear = carYear;
+        if (timeSetting !== null) data.timeSetting = timeSetting;
 
+        setUserData(data);
+        
     } catch (e) {
       console.log('failed to read');
     }
@@ -44,15 +48,6 @@ function App() {
   React.useEffect(() => {
     readData()
   }, [])
-
-  const data = {
-    firstName: first_name,
-    lastName: last_name,
-    carMake: car_make,
-    carModel: car_model,
-    carYear: car_year,
-    timeSetting: time_setting
-  };
 
   const [userData, setUserData] = useState(data);
 
