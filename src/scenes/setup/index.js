@@ -1,8 +1,9 @@
 import React, {useState, useContext} from 'react'; 
-import {View, Text, TextInput, StyleSheet, Picker, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, StyleSheet, Picker, TouchableOpacity, Alert} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {UserContext} from 'utils/UserDataContext';
 import {SaveData} from 'utils/storage';
+import {Styles} from 'styles/index';
 
 const SetupScreen = ({navigation}) => {
 
@@ -24,6 +25,9 @@ const SetupScreen = ({navigation}) => {
   const [carYear, setCarYear] = useState(userData.carYear);
   const [timeSetting, setTimeSetting] = useState(userData.timeSetting);
 
+  var value; 
+  var valid = true; 
+
   let data = {
     firstName: firstName,
     lastName: lastName,
@@ -31,7 +35,7 @@ const SetupScreen = ({navigation}) => {
     carModel: carModel,
     carYear: carYear,
     timeSetting: timeSetting.toString(),
-};
+  }
 
   let input_props1 = {
     placeholder: 'First Name',
@@ -71,21 +75,32 @@ const SetupScreen = ({navigation}) => {
     style: styles.text_input
   }
 
+  const checkValid = () => {
+    for (value in userData) {
+      if (userData[value] === '')
+        valid = false;
+        break;
+    }
+  }
+
+  const checkValue = () => {
+    for (value in data) {
+      if (data[value] === '') data[value] = userData[value];
+    }
+  }
+
   const handlePress = () => {
     checkValue();
     setUserData(data);
     SaveData(data);
-    if (prev === 'Parse')
-      navigation.navigate('Home');
-    else 
-      navigation.navigate('Configuration');
-  };
-
-  var value; 
-  const checkValue = () => {
-    for (value in data) {
-      if (data[value] === '') data[value] = userData[value];
-      console.log(data[value]);
+    checkValid(); 
+    if (valid) {
+      if (prev === 'Parse')
+        navigation.navigate('Home');
+      else 
+        navigation.navigate('Configuration');
+    } else {
+      Alert.alert('1 or more inputs left blank');
     }
   }
 
@@ -147,15 +162,7 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   button: {
-    borderWidth: 1,
-    backgroundColor: "#FFFACD",
-    padding: 10,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    elevation: 4,
-    width: 300,
-    alignItems: 'center',
+    ...Styles.ButtonStyle
   },
   button_text: {
     fontWeight: 'bold',

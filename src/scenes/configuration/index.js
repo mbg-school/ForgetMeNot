@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'; 
 import {UserContext} from 'utils/UserDataContext';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Styles} from 'styles/index'
 
 const ConfigurationScreen = ({navigation}) => {
 
@@ -15,18 +16,28 @@ const ConfigurationScreen = ({navigation}) => {
 
   return (
     <View style = {styles.container}>
-      <Text style = {styles.header}>Personal Information: {'\n'}</Text>
-      <Text>First Name: {userData.firstName}</Text>
-      <Text>Last Name: {userData.lastName + '\n'}</Text>
-      <Text style = {styles.header}>Vehicle Information: {'\n'}</Text>
-      <Text>Car Make: {userData.carMake}</Text>
-      <Text>Car Model: {userData.carModel}</Text>
-      <Text>Car Year: {userData.carYear + '\n'}</Text>
-      <Text>Time Setting: {userData.timeSetting} {plural}</Text>
+      <Text style = {styles.header}>{userData.firstName} {userData.lastName} </Text>
+      <Text style = {styles.text}>
+        <Text style = {{fontWeight:'bold'}}>Car Make: </Text>
+        {userData.carMake}
+      </Text>
+      <Text style = {styles.text}>
+        <Text style = {{fontWeight:'bold'}}>Car Model: </Text>
+        {userData.carModel}
+      </Text>
+      <Text style = {styles.text}>
+        <Text style = {{fontWeight:'bold'}}>Car Year: </Text>
+        {userData.carYear} {'\n'}
+      </Text>
+      <Text style = {styles.text}>
+        <Text style = {{fontWeight:'bold'}}>Time Choice: </Text>
+        {userData.timeSetting} {plural}
+      </Text>
       <TouchableOpacity
+        style = {styles.button}
         onPress={handlePress}
       >
-        <Text>Edit Settings</Text>
+        <Text style = {styles.button_text}>Edit Settings</Text>
       </TouchableOpacity>
     </View>
   );
@@ -35,11 +46,26 @@ const ConfigurationScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    margin: 20,
   },
 
   header: {
-    fontSize: 24,
-    fontWeight: 'bold'
+    ...Styles.HeaderStyle,
+    flex: .1
+  },
+
+  text: {
+    fontSize: 16,
+    marginVertical: 5,
+    ...Styles.TextStyle
+  },
+  button: {
+    ...Styles.ButtonStyle,
+    marginTop: 10,
+    width: 250
+  },
+  button_text: {
+    ...Styles.ButtonTextStyle
   }
 })
 

@@ -4,6 +4,7 @@ import StatusScreen from 'scenes/status';
 import AboutScreen from 'scenes/about';
 import ConfigurationScreen from 'scenes/configuration';
 import SetupScreen from 'scenes/setup';
+import MoreScreen from 'scenes/more';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -11,13 +12,42 @@ import {createStackNavigator} from '@react-navigation/stack';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const SettingsNavigator = () => {
+const MoreNavigator = () => {
   return (
     <Stack.Navigator
-      headerMode='none'
+      headerMode='screen'
     >
-      <Stack.Screen name="Configuration" component={ConfigurationScreen}/>
-      <Stack.Screen name="Setup" component={SetupScreen}/>
+      <Stack.Screen 
+        name="More" 
+        component={MoreScreen}
+        options={{
+            headerShown: false
+        }}
+      />
+      <Stack.Screen 
+        name="Configuration" 
+        component={ConfigurationScreen}
+        options={{
+          title: 'Your Profile',  
+          headerTitleAlign: 'center'
+          }}
+      />
+      <Stack.Screen 
+        name="About"
+        component = {AboutScreen}
+        options = {{
+          title: 'About',
+          headerTitleAlign: 'center'
+        }}
+      />
+      <Stack.Screen 
+        name="Setup" 
+        component={SetupScreen}
+        options={{
+          title:'Settings',
+          headerTitleAlign: 'center'
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -27,8 +57,7 @@ const GeneralFlowNavigator = () => {
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Status" component={StatusScreen} />
-      <Tab.Screen name="Configuration" component={SettingsNavigator} />
-      <Tab.Screen name="About" component={AboutScreen} />
+      <Tab.Screen name="More" component={MoreNavigator} />
     </Tab.Navigator>
   );
 }

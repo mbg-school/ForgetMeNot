@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Navigator from 'navigations';
 import {UserProvider} from 'utils/UserDataContext';
+import {StatusProvider} from 'utils/StatusContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   KEY_FIRST_NAME,
@@ -21,6 +22,10 @@ function App() {
     carYear: '',
     timeSetting: ''
   };
+
+  const status = {
+    list: ['First Status', 'Second Status']
+  }
 
   const readData = async () => {
     try {
@@ -50,10 +55,13 @@ function App() {
   }, [])
 
   const [userData, setUserData] = useState(data);
+  const [currentStatus, setCurrentStatus] = useState(status);
 
   return (
     <UserProvider value = {{userData, setUserData}}>
-      <Navigator />
+      <StatusProvider value = {{currentStatus, setCurrentStatus}}>
+        <Navigator />
+      </StatusProvider>
     </UserProvider>
   );
 }

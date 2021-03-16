@@ -66,8 +66,18 @@ const SaveData = (data) => {
     saveTimeSetting(data.timeSetting);
 }
 
+const ClearStorage = async () => {
+  try {
+    await AsyncStorage.clear();
+    alert('Storage successfully cleared!');
+  } catch (e) {
+    alert('Failed to clear the async storage');
+  }
+}
+
 export {
   SaveData,
+  ClearStorage,
   KEY_FIRST_NAME,
   KEY_LAST_NAME,
   KEY_CAR_MAKE,

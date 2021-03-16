@@ -1,7 +1,6 @@
 import React from 'react'; 
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {NavigationButton, HorizontalLine} from 'atoms/index.js';
-import {Colors} from 'styles/index.js';
 
 const ParseScreen = ({navigation}) => {
 
