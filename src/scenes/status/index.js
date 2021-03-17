@@ -1,8 +1,7 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {StatusContext} from 'utils/StatusContext';
 import {Text, FlatList, StyleSheet, TouchableOpacity, View, Alert} from 'react-native';
 import {Styles} from 'styles/index';
-
 
 const Item = ({item, onPress, style}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -13,9 +12,7 @@ const Item = ({item, onPress, style}) => (
 const StatusScreen = () => {
 
   const {currentStatus, setCurrentStatus} = useContext(StatusContext);
-  // const [status, setStatus] = useState(currentStatus);
   const currentData = [];
-  console.log(currentStatus);
   
   if (currentStatus !== null) {
     currentStatus.list.map(alert => {
@@ -34,10 +31,9 @@ const StatusScreen = () => {
   }
 
   const handleTurnOff = (item) => {
-    Alert.alert(item.title);
+    Alert.alert('Alert removed and responded too!');
     let updatedStatus = {list: removeItem(item)};
     setCurrentStatus(updatedStatus);
-    //setStatus(updatedStatus);
   }
 
   const handlePress = (item) => 
@@ -52,7 +48,7 @@ const StatusScreen = () => {
         },
         {
           text: 'No',
-          onPress: () => Alert.alert('Not Accepted'),
+          onPress: () => Alert.alert('Alert still active!'),
           style: 'cancel'
         }
       ]
