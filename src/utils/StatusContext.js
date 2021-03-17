@@ -2,7 +2,7 @@ import {createContext} from 'react';
 
 const StatusContext = createContext({
   statusList: {
-    list: ['First', 'Second']
+    list: []
   },
   setStatusList: (status) => []
 });

@@ -8,6 +8,9 @@ const KEY_CAR_MODEL = '@save_carmodel';
 const KEY_CAR_YEAR = '@save_caryear';
 const KEY_TIME_SETTING = '@save_timesetting';
 
+const KEY_TIME_ALERTS = '@save_timealert';
+const KEY_ACTION_ALERTS = '@save_actionalert';
+
 const saveFirstName = async (firstname) => {
   try {
     await AsyncStorage.setItem(KEY_FIRST_NAME, firstname); 
@@ -51,6 +54,25 @@ const saveTimeSetting = async (timesetting) => {
   }
 }
 
+const ReadTimeAlerts = async () => {
+  try {
+    const timeAlerts = await AsyncStorage.getItem(KEY_TIME_ALERTS);
+    return timeAlerts != null ? JSON.parse(timeAlerts) : null;
+  } catch (e) {
+    console.log('could not load');
+  }
+}
+
+const SaveTimeAlert = async (time_alert) => {
+  try {
+    const pastAlerts = ReadTimeAlerts();
+    const updatedAlerts = {...pastAlerts, ...time_alert};
+    await AsyncStorage.setItem(KEY_TIME_ALERTS, JSON.stringify(updatedAlerts));
+  } catch (e) {
+    console.log('Failed to add alert')
+  }
+}
+
 const SaveData = (data) => {
   if (data.firstName !== null && data.firstName !== '')
     saveFirstName(data.firstName);
@@ -78,10 +100,13 @@ const ClearStorage = async () => {
 export {
   SaveData,
   ClearStorage,
+  SaveTimeAlert,
+  ReadTimeAlerts,
   KEY_FIRST_NAME,
   KEY_LAST_NAME,
   KEY_CAR_MAKE,
   KEY_CAR_MODEL,
   KEY_CAR_YEAR,
-  KEY_TIME_SETTING
+  KEY_TIME_SETTING,
+  KEY_TIME_ALERTS
 }

@@ -24,7 +24,7 @@ function App() {
   };
 
   const status = {
-    list: ['First Status', 'Second Status']
+    list: ['first alert', 'second alert']
   }
 
   const readData = async () => {
@@ -59,9 +59,9 @@ function App() {
 
   return (
     <UserProvider value = {{userData, setUserData}}>
-      <StatusProvider value = {{currentStatus, setCurrentStatus}}>
-        <Navigator />
-      </StatusProvider>
+    <StatusProvider value = {{currentStatus, setCurrentStatus}}>
+      <Navigator />
+    </StatusProvider>
     </UserProvider>
   );
 }
