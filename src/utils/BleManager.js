@@ -16,19 +16,18 @@ import {
   PermissionsAndroid,
   FlatList,
   TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
+import {Styles} from 'styles/index';
+import {useNavigation} from '@react-navigation/native';
 
 import BleManager from 'react-native-ble-manager';
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
-const ESP32_ID = '24:0A:C4:1C:A6:4E';
-
-const App = () => {
+const BleConnector = () => {
+  const navigation = useNavigation();
   const [isScanning, setIsScanning] = useState(false);
   const peripherals = new Map();
   const [list, setList] = useState([]);
@@ -63,21 +62,6 @@ const App = () => {
     console.log('Received data from ' + data.peripheral + ' characteristic ' + data.characteristic, data.value);
   }
 
-  const retrieveConnected = () => {
-    BleManager.getConnectedPeripherals([]).then((results) => {
-      if (results.length == 0) {
-        console.log('No connected peripherals')
-      }
-      console.log(results);
-      for (var i = 0; i < results.length; i++) {
-        var peripheral = results[i];
-        peripheral.connected = true;
-        peripherals.set(peripheral.id, peripheral);
-        setList(Array.from(peripherals.values()));
-      }
-    });
-  }
-
   const handleDiscoverPeripheral = (peripheral) => {
     console.log('Got ble peripheral', peripheral);
     if (!peripheral.name) {
@@ -93,6 +77,7 @@ const App = () => {
         BleManager.disconnect(peripheral.id);
       }else{
         BleManager.connect(peripheral.id).then(() => {
+          peripheral.connected = true; 
           let p = peripherals.get(peripheral.id);
           if (p) {
             p.connected = true;
@@ -122,6 +107,7 @@ const App = () => {
         }).catch((error) => {
           console.log('Connection error', error);
         });
+        navigation.navigate('Parse');
       }
     }
 
@@ -161,14 +147,14 @@ const App = () => {
   }, []);
 
   const renderItem = (item) => {
-    const color = item.connected ? 'green' : '#fff';
-    if (item.id === ESP32_ID) {
+    if (item.name.includes('ESP32')) {
       return (
-        <TouchableHighlight onPress={() => testPeripheral(item) }>
-          <View style={[styles.row, {backgroundColor: color}]}>
-            <Text style={{fontSize: 12, textAlign: 'center', color: '#333333', padding: 10}}>{item.name}</Text>
-            <Text style={{fontSize: 10, textAlign: 'center', color: '#333333', padding: 2}}>RSSI: {item.rssi}</Text>
-            <Text style={{fontSize: 8, textAlign: 'center', color: '#333333', padding: 2, paddingBottom: 20}}>{item.id}</Text>
+        <TouchableHighlight 
+          style = {styles.button}
+          onPress={() => testPeripheral(item) }
+        >
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.button_text}>{item.name}</Text>
           </View>
         </TouchableHighlight>
       );
@@ -177,84 +163,43 @@ const App = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            
-            <View style={{margin: 10}}>
-              <Button 
-                title={'Scan Bluetooth (' + (isScanning ? 'on' : 'off') + ')'}
-                onPress={() => startScan() } 
-              />            
-            </View>
-
-            <View style={{margin: 10}}>
-              <Button title="Retrieve connected peripherals" onPress={() => retrieveConnected() } />
-            </View>
-
-            {(list.length == 0) &&
-              <View style={{flex:1, margin: 20}}>
-                <Text style={{textAlign: 'center'}}>No peripherals</Text>
-              </View>
-            }
-          
-          </View>              
-        </ScrollView>
+      <View style = {styles.container}>
+        <View> 
+          <View style={{margin: 10}}>
+            <TouchableOpacity 
+              onPress={() => startScan() } 
+              style = {styles.button}
+            >
+              <Text style = {styles.button_text}>
+                {'Search for OBDII (' + (isScanning ? 'on' : 'off') + ')'}
+              </Text>
+            </TouchableOpacity>          
+          </View>
+        </View>              
         <FlatList
             data={list}
             renderItem={({ item }) => renderItem(item) }
             keyExtractor={item => item.id}
           />              
-      </SafeAreaView>
+      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    marginBottom: -20
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  button_text: {
+    ...Styles.ButtonTextStyle,
+    fontWeight: 'bold'
   },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  button: {
+    ...Styles.ButtonStyle,
+    alignSelf: 'center',
+    margin: 5,
+    marginTop: 20
+  }
 });
 
-export default App;
+export default BleConnector;
