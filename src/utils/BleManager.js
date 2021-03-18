@@ -3,39 +3,50 @@ import React, {
   useEffect,
 } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
   NativeModules,
   NativeEventEmitter,
-  Button,
   Platform,
   PermissionsAndroid,
   FlatList,
   TouchableHighlight,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import {Styles} from 'styles/index';
-import {useNavigation} from '@react-navigation/native';
+import {
+  SavePeripheralID,
+  SavePeripheralUUID,
+  SavePeripheralRX,
+  SavePeripheralTX
+} from 'utils/storage';
 
 import BleManager from 'react-native-ble-manager';
+import {useNavigation} from '@react-navigation/native';
+
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
 const BleConnector = () => {
-  const navigation = useNavigation();
   const [isScanning, setIsScanning] = useState(false);
   const peripherals = new Map();
   const [list, setList] = useState([]);
+  const navigation = useNavigation();
+
+  const enableBluetooth = () => {
+    BleManager.enableBluetooth().then(() => {
+      console.log('Bluetooth enabled');
+    }).catch((error) => {
+      console.log('Bluetooth not enabled')
+    })
+  };
 
   const startScan = () => {
     if (!isScanning) {
       BleManager.scan([], 3, true).then((results) => {
-        console.log('Scanning...');
         setIsScanning(true);
       }).catch(err => {
         console.error(err);
@@ -44,7 +55,6 @@ const BleConnector = () => {
   }
 
   const handleStopScan = () => {
-    console.log('Scan is stopped');
     setIsScanning(false);
   }
 
@@ -63,7 +73,6 @@ const BleConnector = () => {
   }
 
   const handleDiscoverPeripheral = (peripheral) => {
-    console.log('Got ble peripheral', peripheral);
     if (!peripheral.name) {
       peripheral.name = 'NO NAME';
     }
@@ -92,6 +101,21 @@ const BleConnector = () => {
             /* Test read current RSSI value */
             BleManager.retrieveServices(peripheral.id).then((peripheralData) => {
               console.log('Retrieved peripheral services', peripheralData);
+              SavePeripheralID(peripheral.id);
+              SavePeripheralUUID(peripheralData.services[2].uuid);
+              SavePeripheralTX(peripheralData.characteristics[4].characteristic);
+              SavePeripheralRX(peripheralData.characteristics[5].characteristic)
+              Alert.alert(
+                'OBDII connected!',
+                null,
+                [
+                  {
+                    text: 'Continue',
+                    onPress: () => navigation.navigate('Parse'),
+                    style: 'default'
+                  }
+                ]
+              );
 
               BleManager.readRSSI(peripheral.id).then((rssi) => {
                 console.log('Retrieved actual RSSI value', rssi);
@@ -107,7 +131,6 @@ const BleConnector = () => {
         }).catch((error) => {
           console.log('Connection error', error);
         });
-        navigation.navigate('Parse');
       }
     }
 

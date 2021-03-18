@@ -1,17 +1,10 @@
 import React from 'react'; 
-import {View, Text, StyleSheet, Image} from 'react-native';
-import {NavigationButton, HorizontalLine} from 'atoms/index.js';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {HorizontalLine} from 'atoms/index.js';
 import {Colors, Styles} from 'styles/index.js';
 import BleConnector from 'utils/BleManager.js'
 
-const WelcomeScreen = () => {
-
-  let props = {
-    title: 'Begin Pairing',
-    next_page: 'Parse',
-    style: styles,
-    previous_page: 'Welcome'
-  };
+const WelcomeScreen = ({navigation}) => {
 
   let line_props = {
     style: styles.line_style
@@ -73,6 +66,9 @@ const styles = StyleSheet.create({
   button_text: {
     ...Styles.ButtonTextStyle,
     fontSize: 16,
+  },
+  button_continue: {
+    width: 100,
   },
   inst_text: {
     textAlign: 'center',
