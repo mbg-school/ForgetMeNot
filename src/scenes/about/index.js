@@ -7,10 +7,11 @@ const AboutScreen = () => {
 
   const handlePress = () => {
     PushNotification.localNotificationSchedule({
+      channelId: "channel_id",
       message: "My Notification Message", // (required)
-      date: new Date(Date.now() + 5 * 1000)
+      date: new Date(Date.now()),
+      id: '1'
     });
-    console.log("pressed")
   }
 
   return (
