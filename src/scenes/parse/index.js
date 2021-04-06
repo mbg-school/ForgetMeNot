@@ -67,7 +67,7 @@ const ParseScreen = ({navigation}) => {
         style={styles.logo}
       />
       <Text style={styles.body_text}>
-      We will now set your OBDII to work with your car!
+        We will now set your OBDII to work with your car!
         Click the button below to let your OBDII know it is time 
         to start monitoring the status of your car.
       </Text>
