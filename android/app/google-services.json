@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "455941524320",
+    "project_id": "forget-me-not-24370",
+    "storage_bucket": "forget-me-not-24370.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455941524320:android:67e230c37468da0b56ac05",
+        "android_client_info": {
+          "package_name": "com.forgetmenot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455941524320-up65psjsfc0qrp9202ub8oipipg8vljm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.forgetmenot",
+            "certificate_hash": "fbc86e605f80fa8d6e49f2d3dd6444519fb6c68a"
+          }
+        },
+        {
+          "client_id": "455941524320-1tjc0ujrro9irvuigecev6uk2tbjis8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmi42Ilf2CHV4NuKSB6rd2eGaeYopcI44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455941524320-1tjc0ujrro9irvuigecev6uk2tbjis8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
