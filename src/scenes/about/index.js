@@ -1,7 +1,6 @@
 import React from 'react'; 
 import {View, Text, Button} from 'react-native';
 import {MyNotification} from 'utils/PushNotifications.js';
-import PushNotification from "react-native-push-notification";
 
 const AboutScreen = () => {
   const props = {
