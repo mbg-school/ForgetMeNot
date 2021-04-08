@@ -1,10 +1,19 @@
-import React from 'react'; 
+import React, {useState, useContext} from 'react'; 
+import {BleContext} from 'utils/BleContext';
 import {View, Text, StyleSheet, Image, Button} from 'react-native';
 import {HorizontalLine} from 'atoms/index.js';
 import {Colors, Styles} from 'styles/index.js';
-import BleConnector from 'utils/BleManager.js'
 
 const WelcomeScreen = ({navigation}) => {
+
+  const {bleConnection, setBleConnection} = useContext(BleContext);
+
+  const ShowButton = () => {
+    if (bleConnection) {
+      return <Button title = 'next page' onPress = {() => navigation.navigate('Home')}/>
+    }
+    return null;
+  }
 
   let line_props = {
     style: styles.line_style
@@ -30,11 +39,7 @@ const WelcomeScreen = ({navigation}) => {
         You should see another button with the name "OBDII" appear,
         click that button to pair with your device. 
       </Text>
-      <BleConnector />
-      {/* <Button
-        title = "next page"
-        onPress = {() => navigation.navigate("Home")}
-      /> */}
+      <ShowButton />
     </View>
   );
 };

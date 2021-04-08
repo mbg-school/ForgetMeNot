@@ -1,16 +1,35 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Navigator from 'navigations';
 import {UserProvider} from 'utils/UserDataContext';
 import {StatusProvider} from 'utils/StatusContext';
+import {BleProvider} from 'utils/BleContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  NativeModules,
+  NativeEventEmitter,
+  Platform,
+  PermissionsAndroid
+} from 'react-native';
 import {
   KEY_FIRST_NAME,
   KEY_LAST_NAME,
   KEY_CAR_MAKE,
   KEY_CAR_MODEL,
   KEY_CAR_YEAR,
-  KEY_TIME_SETTING
+  KEY_TIME_SETTING,
 } from 'utils/storage';
+
+import {
+  startScan,
+  handleDiscoverPeripheral,
+  handleStopScan,
+  handleDisconnectedPeripheral
+} from 'utils/BleConnection.js'
+
+import BleManager from 'react-native-ble-manager';
+
+const BleManagerModule = NativeModules.BleManager;
+const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
 function App() { 
 
@@ -50,17 +69,57 @@ function App() {
     }
   }
 
+  const handleConnectedPeripheral = () => {
+    setBleConnection(true);
+  }
+
   React.useEffect(() => {
-    readData()
+    readData();
+    BleManager.start({showAlert: false});
+
+    bleManagerEmitter.addListener('BleManagerDiscoverPeripheral', handleDiscoverPeripheral);
+    bleManagerEmitter.addListener('BleManagerStopScan', handleStopScan);
+    bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', handleDisconnectedPeripheral);
+    bleManagerEmitter.addListener('BleManagerConnectPeripheral', handleConnectedPeripheral);
+
+    if (Platform.OS === 'android' && Platform.Version >= 23) {
+      PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION).then((result) => {
+          if (result) {
+            console.log("Permission is OK");
+          } else {
+            PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION).then((result) => {
+              if (result) {
+                console.log("User accept");
+              } else {
+                console.log("User refuse");
+              }
+            });
+          }
+      });
+    }
+
+    startScan();
+
+    return (() => {
+      console.log('unmount');
+
+      bleManagerEmitter.removeListener('BleManagerDiscoverPeripheral', handleDiscoverPeripheral);
+      bleManagerEmitter.removeListener('BleManagerStopScan', handleStopScan);
+      bleManagerEmitter.removeListener('BleManagerDisconnectPeripheral', handleDisconnectedPeripheral);
+      bleManagerEmitter.addListener('BleManagerConnectPeripheral', handleConnectedPeripheral);
+    })
   }, [])
 
   const [userData, setUserData] = useState(data);
   const [currentStatus, setCurrentStatus] = useState(status);
+  const [bleConnection, setBleConnection] = useState(false);
 
   return (
     <UserProvider value = {{userData, setUserData}}>
     <StatusProvider value = {{currentStatus, setCurrentStatus}}>
+    <BleProvider value = {{bleConnection, setBleConnection}}>
       <Navigator />
+    </BleProvider>
     </StatusProvider>
     </UserProvider>
   );

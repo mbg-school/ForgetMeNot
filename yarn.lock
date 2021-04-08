@@ -5801,15 +5801,6 @@
   "resolved" "https://registry.npmjs.org/react-native-ble-manager/-/react-native-ble-manager-7.4.2.tgz"
   "version" "7.4.2"
 
-"react-native-countdown-component@^2.7.1":
-  "integrity" "sha512-H7D/YvMjY1hCJf9xFrNh5CsIwkcel/Suno2gYR6ulWwoa2xnUgmltFWoMyEIODsUy7lIK1KCPm+Zn26QajbRaw=="
-  "resolved" "https://registry.npmjs.org/react-native-countdown-component/-/react-native-countdown-component-2.7.1.tgz"
-  "version" "2.7.1"
-  dependencies:
-    "lodash" "^4.17.13"
-    "prop-types" "^15.5.8"
-    "sprintf-js" "^1.1.1"
-
 "react-native-gesture-handler@*", "react-native-gesture-handler@^1.10.3", "react-native-gesture-handler@>= 1.0.0":
   "integrity" "sha512-cBGMi1IEsIVMgoox4RvMx7V2r6bNKw0uR1Mu1o7NbuHS6BRSVLq0dP34l2ecnPlC+jpWd3le6Yg1nrdCjby2Mw=="
   "resolved" "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-1.10.3.tgz"

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Countdown from 'react-native-countdown-component';
 
 const FunctionalButton = (props) => {
 
