@@ -36,11 +36,6 @@ const BleConnector = () => {
   const [list, setList] = useState([]);
   const navigation = useNavigation();
 
-  // const handlePress = () => {
-  //   startScan();
-  //   setTimeout(() => )
-  // }
-
   const enableBluetooth = () => {
     BleManager.enableBluetooth().then(() => {
       console.log('Bluetooth enabled');
