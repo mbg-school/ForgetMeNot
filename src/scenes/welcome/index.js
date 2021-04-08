@@ -30,11 +30,11 @@ const WelcomeScreen = ({navigation}) => {
         You should see another button with the name "OBDII" appear,
         click that button to pair with your device. 
       </Text>
-      {/* <BleConnector /> */}
-      <Button
+      <BleConnector />
+      {/* <Button
         title = "next page"
         onPress = {() => navigation.navigate("Home")}
-      />
+      /> */}
     </View>
   );
 };
