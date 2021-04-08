@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Navigator from 'navigations';
 import {UserProvider} from 'utils/UserDataContext';
 import {StatusProvider} from 'utils/StatusContext';
+import {BleProvider} from 'utils/BleContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   NativeModules,
@@ -21,7 +22,8 @@ import {
 import {
   startScan,
   handleDiscoverPeripheral,
-  handleStopScan
+  handleStopScan,
+  handleDisconnectedPeripheral
 } from 'utils/BleConnection.js'
 
 import BleManager from 'react-native-ble-manager';
@@ -67,12 +69,18 @@ function App() {
     }
   }
 
+  const handleConnectedPeripheral = () => {
+    setBleConnection(true);
+  }
+
   React.useEffect(() => {
     readData();
     BleManager.start({showAlert: false});
 
     bleManagerEmitter.addListener('BleManagerDiscoverPeripheral', handleDiscoverPeripheral);
-    bleManagerEmitter.addListener('BleManagerStopScan', handleStopScan );
+    bleManagerEmitter.addListener('BleManagerStopScan', handleStopScan);
+    bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', handleDisconnectedPeripheral);
+    bleManagerEmitter.addListener('BleManagerConnectPeripheral', handleConnectedPeripheral);
 
     if (Platform.OS === 'android' && Platform.Version >= 23) {
       PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION).then((result) => {
@@ -94,18 +102,24 @@ function App() {
 
     return (() => {
       console.log('unmount');
+
       bleManagerEmitter.removeListener('BleManagerDiscoverPeripheral', handleDiscoverPeripheral);
-      bleManagerEmitter.addListener('BleManagerStopScan', handleStopScan );
+      bleManagerEmitter.removeListener('BleManagerStopScan', handleStopScan);
+      bleManagerEmitter.removeListener('BleManagerDisconnectPeripheral', handleDisconnectedPeripheral);
+      bleManagerEmitter.addListener('BleManagerConnectPeripheral', handleConnectedPeripheral);
     })
   }, [])
 
   const [userData, setUserData] = useState(data);
   const [currentStatus, setCurrentStatus] = useState(status);
+  const [bleConnection, setBleConnection] = useState(false);
 
   return (
     <UserProvider value = {{userData, setUserData}}>
     <StatusProvider value = {{currentStatus, setCurrentStatus}}>
+    <BleProvider value = {{bleConnection, setBleConnection}}>
       <Navigator />
+    </BleProvider>
     </StatusProvider>
     </UserProvider>
   );
