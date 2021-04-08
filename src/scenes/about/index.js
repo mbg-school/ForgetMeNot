@@ -4,14 +4,12 @@ import {MyNotification} from 'utils/PushNotifications.js';
 import PushNotification from "react-native-push-notification";
 
 const AboutScreen = () => {
+  const props = {
+    message: "Working"
+  }
 
   const handlePress = () => {
-    PushNotification.localNotificationSchedule({
-      channelId: "channel_id",
-      message: "My Notification Message", // (required)
-      date: new Date(Date.now()),
-      id: '1'
-    });
+    MyNotification(props);
   }
 
   return (

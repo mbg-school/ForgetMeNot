@@ -1,10 +1,14 @@
 import PushNotification from "react-native-push-notification";
 
-export function MyNotification() {
+export function MyNotification(props) {
+
+  let message = props.message;
 
   PushNotification.localNotificationSchedule({
-    message: "My Notification Message", // (required)
-    date: new Date(Date.now() + 5 * 1000)
+    channelId: "channel_id",
+    message: message, // (required)
+    date: new Date(Date.now()),
+    id: '1'
   });
 
 };
