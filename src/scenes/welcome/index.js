@@ -35,9 +35,8 @@ const WelcomeScreen = ({navigation}) => {
         Plug in the provided OBDII module into the OBDII port.
         The port can be found in the bottom left area of the steering wheel.
         A green light on the module will indicate it is working.
-        Once done click the scan button to search for your OBDII. 
-        You should see another button with the name "OBDII" appear,
-        click that button to pair with your device. 
+        Once your phone is connected to the OBDII, a button will appear to
+        take you to the next page.
       </Text>
       <ShowButton />
     </View>
