@@ -6,11 +6,11 @@ import {Colors, Styles} from 'styles/index.js';
 
 const WelcomeScreen = ({navigation}) => {
 
-  const {bleConnection, setBleConnection} = useContext(BleContext);
+  const {bleConnection} = useContext(BleContext);
 
   const ShowButton = () => {
     if (bleConnection) {
-      return <Button title = 'next page' onPress = {() => navigation.navigate('Home')}/>
+      return <Button title = 'next page' onPress = {() => navigation.navigate('Parse')}/>
     }
     return null;
   }

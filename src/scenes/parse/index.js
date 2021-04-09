@@ -1,59 +1,14 @@
-import React, {useState} from 'react'; 
+import React from 'react'; 
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {HorizontalLine} from 'atoms/index.js';
 import {Styles} from 'styles/index';
-import BleManager from 'react-native-ble-manager';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {stringToBytes} from 'convert-string';
-import {
-  KEY_PERIPHERAL_ID,
-  KEY_PERIPHERAL_UUID,
-  KEY_PERIPHERAL_TX,
-  KEY_PERIPHERAL_RX
-} from 'utils/storage';
 
 const ParseScreen = ({navigation}) => {
-
-  const [peripheralID, setPeripheralID] = useState();
-  const [peripheralUUID, setPeripheralUUID] = useState();
-  const [peripheralRX, setPeripheralRX] = useState(); 
-
-  const getData = async () => {
-    try {
-      const id = await AsyncStorage.getItem(KEY_PERIPHERAL_ID);
-      const uuid = await AsyncStorage.getItem(KEY_PERIPHERAL_UUID);
-      const tx = await AsyncStorage.getItem(KEY_PERIPHERAL_TX);
-      const rx = await AsyncStorage.getItem(KEY_PERIPHERAL_RX);
-
-      setPeripheralID(id);
-      setPeripheralUUID(uuid);
-      setPeripheralRX(rx);
-    } catch (e) {
-      console.log('failed');
-    }
-  };
-
-  const turnOnLED = () => {
-    const data = stringToBytes('on');
-    BleManager.write(
-      peripheralID, 
-      peripheralUUID, 
-      peripheralRX, 
-      data
-    ).then(() => {
-      console.log("write: " + data);
-      navigation.navigate('Setup', {name: 'Parse'});
-    })
-    .catch((e) => {
-      console.log(e);
-    })
-  };
 
   React.useEffect(() => {
       navigation.addListener('beforeRemove', (e) => {
         e.preventDefault();
       });
-      getData();
   });
 
   let line_props = {
@@ -74,7 +29,7 @@ const ParseScreen = ({navigation}) => {
       <HorizontalLine {...line_props} />
       <TouchableOpacity
         style = {styles.button}
-        onPress = {turnOnLED}
+        onPress = {() => {navigation.navigate('Setup')}}
       >
         <Text style = {styles.button_text}>
           Get Data

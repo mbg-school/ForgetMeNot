@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'; 
+import React, {useContext, useState} from 'react'; 
 import {StatusContext} from 'utils/StatusContext';
 import {UserContext} from 'utils/UserDataContext'
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
@@ -7,15 +7,16 @@ import {HorizontalLine} from 'atoms/index';
 
 const HomeScreen = ({navigation}) => {
 
-  React.useEffect(
-    () =>
-      navigation.addListener('beforeRemove', (e) => {
-        e.preventDefault();
-      })
-  );
-
   const {currentStatus} = useContext(StatusContext);
   const {userData} = useContext(UserContext);
+  const [userName, setUserName] = useState(userData.firstName);
+
+  React.useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      e.preventDefault();
+    }),
+    setUserName(userData.firstName);
+  }, []);
 
   let status = 'No current alerts.';
   let status_length = currentStatus.list.length;
@@ -51,7 +52,7 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <View style = {styles.container}>
-      <Text style = {styles.title}>Hello, {userData.firstName}!</Text>
+      <Text style = {styles.title}>Hello, {userName}!</Text>
       <Text style = {styles.header}>Alerts</Text>
       <View style = {styles.row}> 
         <Text style = {styles.text}>{status}</Text>
