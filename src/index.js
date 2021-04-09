@@ -97,7 +97,6 @@ function App() {
           }
       });
     }
-
     startScan();
 
     return (() => {
@@ -110,7 +109,7 @@ function App() {
     })
   }, [])
 
-  const [userData, setUserData] = useState(data);
+  const [userData, setUserData] = useState('');
   const [currentStatus, setCurrentStatus] = useState(status);
   const [bleConnection, setBleConnection] = useState(false);
 
