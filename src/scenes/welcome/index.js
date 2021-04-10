@@ -5,7 +5,6 @@ import {HorizontalLine} from 'atoms/index.js';
 import {Colors, Styles} from 'styles/index.js';
 import {
   handleYes,
-  handleNo
 } from 'utils/WelcomeHelpers'
 
 const WelcomeScreen = ({navigation}) => {
@@ -27,7 +26,10 @@ const WelcomeScreen = ({navigation}) => {
       [
         {
           text: "Yes",
-          onPress: () => {navigation.navigate("Setup", {name: "Welcome"})},
+          onPress: () => {
+            handleYes();
+            //navigation.navigate("Setup", {name: "Welcome"})
+          },
           style: "default"
         },
         {

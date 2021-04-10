@@ -3,10 +3,12 @@ import {
   SavePeripheralUUID,
   SavePeripheralRX,
   SavePeripheralTX,
-  ReadPeripheralID,
-  ReadPeripheralUUID,
-  ReadPeripheralRX
+  KEY_PERIPHERAL_ID,
+  KEY_PERIPHERAL_UUID,
+  KEY_PERIPHERAL_TX
 } from 'utils/storage';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import BleManager from 'react-native-ble-manager';
 
@@ -55,18 +57,41 @@ export function handleDisconnectedPeripheral() {
   startScan();
 }
 
-export function handleEnableNotifications() {
-  const peripheralId = ReadPeripheralID();
-  const peripheralUUID = ReadPeripheralUUID();
-  const peripheralRX = ReadPeripheralRX();
+export async function handleEnableNotifications() {
 
-  BleManager.startNotification(peripheralId, peripheralUUID, peripheralRX, 1)
+  let peripheralID = null;
+  let peripheralUUID = null; 
+  let peripheralTX = null; 
+  
+  try {
+    const ID = await AsyncStorage.getItem(KEY_PERIPHERAL_ID);
+    if (ID !== null) peripheralID = ID;
+  } catch (e) {
+    console.log('failed to read');
+  } 
+
+  try {
+    const UUID = await AsyncStorage.getItem(KEY_PERIPHERAL_UUID);
+    if (UUID !== null) peripheralUUID = UUID; 
+  } catch (e) {
+    console.log('failed to read');
+  }
+
+  try {
+    const TX = await AsyncStorage.getItem(KEY_PERIPHERAL_TX);
+    if (TX !== null) peripheralTX = TX; 
+  } catch (e) {
+    console.log('failed to read');
+  } 
+
+  BleManager.startNotification(peripheralID, peripheralUUID, peripheralTX, 1)
     .then(() => {
-      console.log("Notifcation started");
+      console.log("Notification started");
     })
     .catch((error) => {
-      console.log(error);
-    });
+      console.log(error)
+    })
+
 }
 
 
