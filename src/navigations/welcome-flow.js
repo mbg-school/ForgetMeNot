@@ -21,7 +21,8 @@ const checkCurrentUser = async () => {
 }
 
 function StackNavigator() {
-  if (currentUser) {
+  checkCurrentUser();
+  if (!currentUser) {
     return (
       <Stack.Navigator 
         initialRouteName="Welcome"

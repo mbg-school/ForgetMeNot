@@ -2,7 +2,10 @@ import {
   SavePeripheralID,
   SavePeripheralUUID,
   SavePeripheralRX,
-  SavePeripheralTX
+  SavePeripheralTX,
+  ReadPeripheralID,
+  ReadPeripheralUUID,
+  ReadPeripheralRX
 } from 'utils/storage';
 
 import BleManager from 'react-native-ble-manager';
@@ -34,11 +37,11 @@ export function handleDiscoverPeripheral(peripheral) {
           SavePeripheralID(peripheral.id);
           SavePeripheralUUID(peripheralData.services[2].uuid);
           SavePeripheralTX(peripheralData.characteristics[4].characteristic);
-          SavePeripheralRX(peripheralData.characteristics[5].characteristic)
+          SavePeripheralRX(peripheralData.characteristics[5].characteristic);
 
           BleManager.readRSSI(peripheral.id).then((rssi) => {
             console.log('Retrieved actual RSSI value', rssi);               
-          });                                          
+          });
         });
       }, 900);
     }).catch((error) => {
@@ -50,6 +53,20 @@ export function handleDiscoverPeripheral(peripheral) {
 export function handleDisconnectedPeripheral() {
   console.log('disconnected from esp32');
   startScan();
+}
+
+export function handleEnableNotifications() {
+  const peripheralId = ReadPeripheralID();
+  const peripheralUUID = ReadPeripheralUUID();
+  const peripheralRX = ReadPeripheralRX();
+
+  BleManager.startNotification(peripheralId, peripheralUUID, peripheralRX, 1)
+    .then(() => {
+      console.log("Notifcation started");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 

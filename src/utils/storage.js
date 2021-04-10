@@ -161,24 +161,27 @@ const SaveData = (data) => {
     saveTimeSetting(data.timeSetting);
 }
 
-const ClearStorage = async () => {
+const restoreDefault = async (keys) => {
   try {
-    await AsyncStorage.clear();
-    alert('Storage successfully cleared!');
+    await AsyncStorage.multiRemove(keys);
+    alert('Reset to default!');
   } catch (e) {
-    alert('Failed to clear the async storage');
+    alert('Failed to reset the async storage');
   }
 }
 
 export {
   SaveData,
-  ClearStorage,
+  restoreDefault,
   SaveTimeAlert,
   ReadTimeAlerts,
   SavePeripheralID,
   SavePeripheralUUID,
   SavePeripheralTX,
   SavePeripheralRX,
+  ReadPeripheralID,
+  ReadPeripheralUUID,
+  ReadPeripheralRX,
   KEY_FIRST_NAME,
   KEY_LAST_NAME,
   KEY_CAR_MAKE,

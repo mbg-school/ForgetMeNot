@@ -1,16 +1,19 @@
 import React, {useState, useContext} from 'react'; 
 import {BleContext} from 'utils/BleContext';
-import {View, Text, StyleSheet, Image, Button} from 'react-native';
+import {View, Text, StyleSheet, Image, Button, Alert} from 'react-native';
 import {HorizontalLine} from 'atoms/index.js';
 import {Colors, Styles} from 'styles/index.js';
+import {
+  handlePress
+} from 'utils/WelcomeHelpers.js'
 
-const WelcomeScreen = ({navigation}) => {
+const WelcomeScreen = () => {
 
   const {bleConnection} = useContext(BleContext);
 
   const ShowButton = () => {
     if (bleConnection) {
-      return <Button title = 'next page' onPress = {() => navigation.navigate('Parse')}/>
+      return <Button title = 'next page' onPress = {handlePress}/>
     }
     return null;
   }
