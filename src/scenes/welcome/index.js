@@ -4,10 +4,11 @@ import {View, Text, StyleSheet, Image, Button, Alert} from 'react-native';
 import {HorizontalLine} from 'atoms/index.js';
 import {Colors, Styles} from 'styles/index.js';
 import {
-  handlePress
-} from 'utils/WelcomeHelpers.js'
+  handleYes,
+  handleNo
+} from 'utils/WelcomeHelpers'
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({navigation}) => {
 
   const {bleConnection} = useContext(BleContext);
 
@@ -16,6 +17,26 @@ const WelcomeScreen = () => {
       return <Button title = 'next page' onPress = {handlePress}/>
     }
     return null;
+  }
+
+  const handlePress = () => {
+
+    Alert.alert(
+      "Enable Notifications?",
+      "Would you like to enable push notifications:",
+      [
+        {
+          text: "Yes",
+          onPress: () => {navigation.navigate("Setup", {name: "Welcome"})},
+          style: "default"
+        },
+        {
+          text: "No",
+          onPress: () => {navigation.navigate("Setup")},
+          style: "cancel"
+        }
+      ]
+    )
   }
 
   let line_props = {
