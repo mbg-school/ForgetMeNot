@@ -4,7 +4,6 @@ import {UserProvider} from 'utils/UserDataContext';
 import {StatusProvider} from 'utils/StatusContext';
 import {BleProvider} from 'utils/BleContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import handleEnableNotifications from 'utils/BleConnection';
 import {bytesToString} from 'convert-string';
 import {
   NativeModules,
@@ -25,6 +24,7 @@ import {
   handleDiscoverPeripheral,
   handleStopScan,
   handleDisconnectedPeripheral,
+  handleEnableNotifications,
 } from 'utils/BleConnection';
 
 import BleManager from 'react-native-ble-manager';
@@ -70,7 +70,6 @@ function App() {
       }
 
       setUserData(data);
-      console.log('got here');
     } catch (e) {
       console.log('failed to read');
     }
@@ -78,7 +77,6 @@ function App() {
 
   const handleConnectedPeripheral = () => {
     setBleConnection(true);
-    handleEnableNotifications();
   };
 
   React.useEffect(() => {
