@@ -99,3 +99,44 @@ export async function handleEnableNotifications() {
       console.log(error);
     });
 }
+
+export async function handleUpdateCharacteristic() {
+  let peripheralID = null;
+  let peripheralUUID = null;
+  let peripheralTX = null;
+
+  try {
+    const ID = await AsyncStorage.getItem(KEY_PERIPHERAL_ID);
+    if (ID !== null) {
+      peripheralID = ID;
+    }
+  } catch (e) {
+    console.log('failed to read');
+  }
+
+  try {
+    const UUID = await AsyncStorage.getItem(KEY_PERIPHERAL_UUID);
+    if (UUID !== null) {
+      peripheralUUID = UUID;
+    }
+  } catch (e) {
+    console.log('failed to read');
+  }
+
+  try {
+    const TX = await AsyncStorage.getItem(KEY_PERIPHERAL_TX);
+    if (TX !== null) {
+      peripheralTX = TX;
+    }
+  } catch (e) {
+    console.log('failed to read');
+  }
+
+  BleManager.read(peripheralID, peripheralUUID, peripheralTX)
+    .then((readData) => {
+      console.log('read: ' + readData);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}

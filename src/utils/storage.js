@@ -7,11 +7,11 @@ const KEY_CAR_MODEL = '@save_carmodel';
 const KEY_CAR_YEAR = '@save_caryear';
 const KEY_TIME_ALERTS = '@save_timealert';
 // const KEY_ACTION_ALERTS = '@save_actionalert';
-
 const KEY_PERIPHERAL_UUID = '@save_peripheral_uuid';
 const KEY_PERIPHERAL_ID = '@save_peripheral_id';
 const KEY_PERIPHERAL_RX = '@save_peripheral_rx';
 const KEY_PERIPHERAL_TX = '@save_peripheral_tx';
+const KEY_NOTIFICATION = '@save_notification';
 
 const saveFirstName = async (firstname) => {
   try {
@@ -46,6 +46,14 @@ const saveCarYear = async (caryear) => {
     await AsyncStorage.setItem(KEY_CAR_YEAR, caryear);
   } catch (e) {
     console.log('failed to save');
+  }
+};
+
+const SaveNotification = async (choice) => {
+  try {
+    await AsyncStorage.setItem(KEY_NOTIFICATION, choice);
+  } catch (e) {
+    console.log('failed to save choice');
   }
 };
 
@@ -92,13 +100,13 @@ const SavePeripheralTX = async (char) => {
   }
 };
 
-// const SavePeripheralRX = async (char) => {
-//   try {
-//     await AsyncStorage.setItem(KEY_PERIPHERAL_RX, char);
-//   } catch (e) {
-//     console.log('Failed to save')
-//   }
-// }
+const SavePeripheralRX = async (char) => {
+  try {
+    await AsyncStorage.setItem(KEY_PERIPHERAL_RX, char);
+  } catch (e) {
+    console.log('Failed to save');
+  }
+};
 
 const SaveData = (data) => {
   if (data.firstName !== null && data.firstName !== '') {
@@ -135,6 +143,8 @@ export {
   SavePeripheralID,
   SavePeripheralUUID,
   SavePeripheralTX,
+  SaveNotification,
+  SavePeripheralRX,
   KEY_FIRST_NAME,
   KEY_LAST_NAME,
   KEY_CAR_MAKE,
@@ -145,4 +155,5 @@ export {
   KEY_PERIPHERAL_UUID,
   KEY_PERIPHERAL_TX,
   KEY_PERIPHERAL_RX,
+  KEY_NOTIFICATION,
 };

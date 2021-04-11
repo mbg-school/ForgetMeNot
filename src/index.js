@@ -4,6 +4,7 @@ import {UserProvider} from 'utils/UserDataContext';
 import {StatusProvider} from 'utils/StatusContext';
 import {BleProvider} from 'utils/BleContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import handleEnableNotifications from 'utils/BleConnection';
 import {
   NativeModules,
   NativeEventEmitter,
@@ -16,6 +17,7 @@ import {
   KEY_CAR_MAKE,
   KEY_CAR_MODEL,
   KEY_CAR_YEAR,
+  KEY_NOTIFICATION,
 } from 'utils/storage';
 
 import {
@@ -23,6 +25,7 @@ import {
   handleDiscoverPeripheral,
   handleStopScan,
   handleDisconnectedPeripheral,
+  handleUpdateCharacteristic,
 } from 'utils/BleConnection.js';
 
 import BleManager from 'react-native-ble-manager';
@@ -50,6 +53,7 @@ function App() {
       const carMake = await AsyncStorage.getItem(KEY_CAR_MAKE);
       const carModel = await AsyncStorage.getItem(KEY_CAR_MODEL);
       const carYear = await AsyncStorage.getItem(KEY_CAR_YEAR);
+      const choice = await AsyncStorage.getItem(KEY_NOTIFICATION);
 
       if (firstName !== null) {
         data.firstName = firstName;
@@ -65,6 +69,9 @@ function App() {
       }
       if (carYear !== null) {
         data.carYear = carYear;
+      }
+      if (choice === 'true') {
+        handleEnableNotifications();
       }
 
       setUserData(data);
@@ -93,6 +100,10 @@ function App() {
     bleManagerEmitter.addListener(
       'BleManagerConnectPeripheral',
       handleConnectedPeripheral,
+    );
+    bleManagerEmitter.addListener(
+      'BleManagerDidUpdateValueForCharacteristic',
+      handleUpdateCharacteristic,
     );
 
     if (Platform.OS === 'android' && Platform.Version >= 23) {
