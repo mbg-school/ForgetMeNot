@@ -5,6 +5,7 @@ import {StatusProvider} from 'utils/StatusContext';
 import {BleProvider} from 'utils/BleContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import handleEnableNotifications from 'utils/BleConnection';
+import {bytesToString} from 'convert-string';
 import {
   NativeModules,
   NativeEventEmitter,
@@ -17,7 +18,6 @@ import {
   KEY_CAR_MAKE,
   KEY_CAR_MODEL,
   KEY_CAR_YEAR,
-  KEY_NOTIFICATION,
 } from 'utils/storage';
 
 import {
@@ -25,8 +25,7 @@ import {
   handleDiscoverPeripheral,
   handleStopScan,
   handleDisconnectedPeripheral,
-  handleUpdateCharacteristic,
-} from 'utils/BleConnection.js';
+} from 'utils/BleConnection';
 
 import BleManager from 'react-native-ble-manager';
 
@@ -53,7 +52,6 @@ function App() {
       const carMake = await AsyncStorage.getItem(KEY_CAR_MAKE);
       const carModel = await AsyncStorage.getItem(KEY_CAR_MODEL);
       const carYear = await AsyncStorage.getItem(KEY_CAR_YEAR);
-      const choice = await AsyncStorage.getItem(KEY_NOTIFICATION);
 
       if (firstName !== null) {
         data.firstName = firstName;
@@ -70,11 +68,9 @@ function App() {
       if (carYear !== null) {
         data.carYear = carYear;
       }
-      if (choice === 'true') {
-        handleEnableNotifications();
-      }
 
       setUserData(data);
+      console.log('got here');
     } catch (e) {
       console.log('failed to read');
     }
@@ -82,6 +78,7 @@ function App() {
 
   const handleConnectedPeripheral = () => {
     setBleConnection(true);
+    handleEnableNotifications();
   };
 
   React.useEffect(() => {
@@ -103,7 +100,11 @@ function App() {
     );
     bleManagerEmitter.addListener(
       'BleManagerDidUpdateValueForCharacteristic',
-      handleUpdateCharacteristic,
+      ({value, peripheral, characteristic, service}) => {
+        // Convert bytes array to string
+        const message = bytesToString(value);
+        console.log(`Recieved ${message} for characteristic ${characteristic}`);
+      },
     );
 
     if (Platform.OS === 'android' && Platform.Version >= 23) {

@@ -2,6 +2,7 @@ import {
   SavePeripheralID,
   SavePeripheralUUID,
   SavePeripheralTX,
+  SavePeripheralRX,
   KEY_PERIPHERAL_ID,
   KEY_PERIPHERAL_UUID,
   KEY_PERIPHERAL_TX,
@@ -40,6 +41,7 @@ export function handleDiscoverPeripheral(peripheral) {
             console.log('Retrieved peripheral services', peripheralData);
             SavePeripheralID(peripheral.id);
             SavePeripheralUUID(peripheralData.services[2].uuid);
+            SavePeripheralRX(peripheralData.characteristics[5].characteristic);
             SavePeripheralTX(peripheralData.characteristics[4].characteristic);
 
             BleManager.readRSSI(peripheral.id).then((rssi) => {
@@ -94,47 +96,6 @@ export async function handleEnableNotifications() {
   BleManager.startNotification(peripheralID, peripheralUUID, peripheralTX, 1)
     .then(() => {
       console.log('Notification started');
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-export async function handleUpdateCharacteristic() {
-  let peripheralID = null;
-  let peripheralUUID = null;
-  let peripheralTX = null;
-
-  try {
-    const ID = await AsyncStorage.getItem(KEY_PERIPHERAL_ID);
-    if (ID !== null) {
-      peripheralID = ID;
-    }
-  } catch (e) {
-    console.log('failed to read');
-  }
-
-  try {
-    const UUID = await AsyncStorage.getItem(KEY_PERIPHERAL_UUID);
-    if (UUID !== null) {
-      peripheralUUID = UUID;
-    }
-  } catch (e) {
-    console.log('failed to read');
-  }
-
-  try {
-    const TX = await AsyncStorage.getItem(KEY_PERIPHERAL_TX);
-    if (TX !== null) {
-      peripheralTX = TX;
-    }
-  } catch (e) {
-    console.log('failed to read');
-  }
-
-  BleManager.read(peripheralID, peripheralUUID, peripheralTX)
-    .then((readData) => {
-      console.log('read: ' + readData);
     })
     .catch((error) => {
       console.log(error);

@@ -1,9 +1,8 @@
 import React, {useContext} from 'react';
 import {BleContext} from 'utils/BleContext';
-import {View, Text, StyleSheet, Image, Button, Alert} from 'react-native';
+import {View, Text, StyleSheet, Image, Button} from 'react-native';
 import {HorizontalLine} from 'atoms/index.js';
 import {Colors, Styles} from 'styles/index.js';
-import {handleYes, handleNo, getChoice} from 'utils/WelcomeHelpers';
 
 const WelcomeScreen = ({navigation}) => {
   const {bleConnection} = useContext(BleContext);
@@ -16,33 +15,7 @@ const WelcomeScreen = ({navigation}) => {
   };
 
   const handlePress = () => {
-    const currentChoice = getChoice();
-    if (currentChoice) {
-      Alert.alert(
-        'Enable Notifications?',
-        'Would you like to enable push notifications:',
-        [
-          {
-            text: 'Yes',
-            onPress: () => {
-              handleYes();
-              navigation.navigate('Setup', {name: 'Welcome'});
-            },
-            style: 'default',
-          },
-          {
-            text: 'No',
-            onPress: () => {
-              handleNo();
-              navigation.navigate('Setup', {name: 'Welcome'});
-            },
-            style: 'cancel',
-          },
-        ],
-      );
-    } else {
-      navigation.navigate('Setup', {name: 'Welcome'});
-    }
+    navigation.navigate('Setup', {name: 'Welcome'});
   };
 
   let line_props = {
