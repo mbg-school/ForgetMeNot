@@ -5,12 +5,12 @@ import {Styles} from 'styles/index';
 const Data = [
   {
     title: 'Configuration',
-    button_name: 'Profile'
+    button_name: 'Profile',
   },
   {
     title: 'About',
-    button_name: 'About'
-  }
+    button_name: 'About',
+  },
 ];
 
 const Item = ({item, onPress, style}) => (
@@ -20,44 +20,36 @@ const Item = ({item, onPress, style}) => (
 );
 
 const MoreScreen = ({navigation}) => {
-
   const renderItem = ({item}) => {
-    return (
-      <Item
-        item = {item}
-        onPress = {() => navigation.navigate(item.title)}
-      />
-    )
+    return <Item item={item} onPress={() => navigation.navigate(item.title)} />;
   };
 
   return (
-    <View style = {styles.container}>
+    <View style={styles.container}>
       <FlatList
-        data = {Data}
-        renderItem = {renderItem}
-        keyExtractor = {(item) => item.title}
+        data={Data}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.title}
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   item: {
     padding: 10,
     backgroundColor: '#FFFACD',
     borderColor: 'black',
     borderWidth: 1,
-    marginTop: 10
+    marginTop: 10,
   },
   button_text: {
     fontSize: 24,
-    ...Styles.ButtonTextStyle
-  }
-})
+    ...Styles.ButtonTextStyle,
+  },
+});
 
 export default MoreScreen;
-
-

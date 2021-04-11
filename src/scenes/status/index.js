@@ -1,6 +1,13 @@
 import React, {useContext} from 'react';
 import {StatusContext} from 'utils/StatusContext';
-import {Text, FlatList, StyleSheet, TouchableOpacity, View, Alert} from 'react-native';
+import {
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Alert,
+} from 'react-native';
 import {Styles} from 'styles/index';
 
 const Item = ({item, onPress, style}) => (
@@ -10,70 +17,60 @@ const Item = ({item, onPress, style}) => (
 );
 
 const StatusScreen = () => {
-
   const {currentStatus, setCurrentStatus} = useContext(StatusContext);
   const currentData = [];
-  
+
   if (currentStatus !== null) {
-    currentStatus.list.map(alert => {
+    currentStatus.list.map((alert) => {
       currentData.push({title: alert});
-    })  
-  } 
+    });
+  }
 
   const removeItem = (item) => {
-    let arr = currentStatus.list; 
+    let arr = currentStatus.list;
     for (var i = 0; i < arr.length; i++) {
       if (arr[i] === item.title) {
         arr.splice(i, 1);
       }
     }
-    return arr; 
-  }
+    return arr;
+  };
 
   const handleTurnOff = (item) => {
     Alert.alert('Alert removed and responded too!');
     let updatedStatus = {list: removeItem(item)};
     setCurrentStatus(updatedStatus);
-  }
+  };
 
-  const handlePress = (item) => 
-    Alert.alert(
-      item.title,
-      'How would you to respond to the alert?',
-      [
-        {
-          text: 'Turn off',
-          onPress: () => handleTurnOff(item),
-          style: 'default'
-        },
-        {
-          text: 'No',
-          onPress: () => Alert.alert('Alert still active!'),
-          style: 'cancel'
-        }
-      ]
-    ) 
+  const handlePress = (item) =>
+    Alert.alert(item.title, 'How would you to respond to the alert?', [
+      {
+        text: 'Turn off',
+        onPress: () => handleTurnOff(item),
+        style: 'default',
+      },
+      {
+        text: 'No',
+        onPress: () => Alert.alert('Alert still active!'),
+        style: 'cancel',
+      },
+    ]);
 
   const renderItem = ({item}) => {
-    return (
-      <Item
-        item = {item}
-        onPress = {() => handlePress(item)}
-      />
-    )
+    return <Item item={item} onPress={() => handlePress(item)} />;
   };
 
   return (
-    <View style = {styles.container}>
-      <Text style = {styles.header}>Current Alerts</Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>Current Alerts</Text>
       <FlatList
-        data = {currentData}
-        renderItem = {renderItem}
-        keyExtractor = {(item) => item.title}
+        data={currentData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.title}
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -87,14 +84,13 @@ const styles = StyleSheet.create({
   },
   button_text: {
     ...Styles.ButtonTextSyle,
-    fontSize: 16
+    fontSize: 16,
   },
   header: {
     ...Styles.HeaderStyle,
     marginTop: 20,
-    fontSize: 32
-  }
-})
-
+    fontSize: 32,
+  },
+});
 
 export default StatusScreen;

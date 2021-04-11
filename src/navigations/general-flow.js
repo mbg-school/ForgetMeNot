@@ -14,43 +14,41 @@ const Stack = createStackNavigator();
 
 const MoreNavigator = () => {
   return (
-    <Stack.Navigator
-      headerMode='screen'
-    >
-      <Stack.Screen 
-        name="More" 
+    <Stack.Navigator headerMode="screen">
+      <Stack.Screen
+        name="More"
         component={MoreScreen}
         options={{
-            headerShown: false
+          headerShown: false,
         }}
       />
-      <Stack.Screen 
-        name="Configuration" 
+      <Stack.Screen
+        name="Configuration"
         component={ConfigurationScreen}
         options={{
-          title: 'Your Profile',  
-          headerTitleAlign: 'center'
-          }}
-      />
-      <Stack.Screen 
-        name="About"
-        component = {AboutScreen}
-        options = {{
-          title: 'About',
-          headerTitleAlign: 'center'
+          title: 'Your Profile',
+          headerTitleAlign: 'center',
         }}
       />
-      <Stack.Screen 
-        name="Setup" 
+      <Stack.Screen
+        name="About"
+        component={AboutScreen}
+        options={{
+          title: 'About',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Setup"
         component={SetupScreen}
         options={{
-          title:'Settings',
-          headerTitleAlign: 'center'
+          title: 'Settings',
+          headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>
   );
-}
+};
 
 const GeneralFlowNavigator = () => {
   return (
@@ -60,6 +58,6 @@ const GeneralFlowNavigator = () => {
       <Tab.Screen name="More" component={MoreNavigator} />
     </Tab.Navigator>
   );
-}
+};
 
 export default GeneralFlowNavigator;

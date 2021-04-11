@@ -1,11 +1,10 @@
 import {
   SavePeripheralID,
   SavePeripheralUUID,
-  SavePeripheralRX,
   SavePeripheralTX,
   KEY_PERIPHERAL_ID,
   KEY_PERIPHERAL_UUID,
-  KEY_PERIPHERAL_TX
+  KEY_PERIPHERAL_TX,
 } from 'utils/storage';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,11 +12,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import BleManager from 'react-native-ble-manager';
 
 export function startScan() {
-  BleManager.scan([], 300, true).then((results) => {
-    console.log('scanning');
-  }).catch(err => {
-    console.error(err);
-  });
+  BleManager.scan([], 300, true)
+    .then((results) => {
+      console.log('scanning');
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 export function handleStopScan() {
@@ -25,30 +26,31 @@ export function handleStopScan() {
 }
 
 export function handleDiscoverPeripheral(peripheral) {
-  if (peripheral.name == 'ESP32 Tech DEMO') {
-    BleManager.connect(peripheral.id).then(() => {
-      peripheral.connected = true;
-    
-      console.log('Connected to ' + peripheral.name);
-      BleManager.stopScan();
+  if (peripheral.name === 'ESP32 Tech DEMO') {
+    BleManager.connect(peripheral.id)
+      .then(() => {
+        peripheral.connected = true;
 
-      setTimeout(() => {
-        /* Test read current RSSI value */
-        BleManager.retrieveServices(peripheral.id).then((peripheralData) => {
-          console.log('Retrieved peripheral services', peripheralData);
-          SavePeripheralID(peripheral.id);
-          SavePeripheralUUID(peripheralData.services[2].uuid);
-          SavePeripheralTX(peripheralData.characteristics[4].characteristic);
-          SavePeripheralRX(peripheralData.characteristics[5].characteristic);
+        console.log('Connected to ' + peripheral.name);
+        BleManager.stopScan();
 
-          BleManager.readRSSI(peripheral.id).then((rssi) => {
-            console.log('Retrieved actual RSSI value', rssi);               
+        setTimeout(() => {
+          /* Test read current RSSI value */
+          BleManager.retrieveServices(peripheral.id).then((peripheralData) => {
+            console.log('Retrieved peripheral services', peripheralData);
+            SavePeripheralID(peripheral.id);
+            SavePeripheralUUID(peripheralData.services[2].uuid);
+            SavePeripheralTX(peripheralData.characteristics[4].characteristic);
+
+            BleManager.readRSSI(peripheral.id).then((rssi) => {
+              console.log('Retrieved actual RSSI value', rssi);
+            });
           });
-        });
-      }, 900);
-    }).catch((error) => {
-      console.log('Connection error', error);
-    });
+        }, 900);
+      })
+      .catch((error) => {
+        console.log('Connection error', error);
+      });
   }
 }
 
@@ -58,43 +60,42 @@ export function handleDisconnectedPeripheral() {
 }
 
 export async function handleEnableNotifications() {
-
   let peripheralID = null;
-  let peripheralUUID = null; 
-  let peripheralTX = null; 
-  
+  let peripheralUUID = null;
+  let peripheralTX = null;
+
   try {
     const ID = await AsyncStorage.getItem(KEY_PERIPHERAL_ID);
-    if (ID !== null) peripheralID = ID;
+    if (ID !== null) {
+      peripheralID = ID;
+    }
   } catch (e) {
     console.log('failed to read');
-  } 
+  }
 
   try {
     const UUID = await AsyncStorage.getItem(KEY_PERIPHERAL_UUID);
-    if (UUID !== null) peripheralUUID = UUID; 
+    if (UUID !== null) {
+      peripheralUUID = UUID;
+    }
   } catch (e) {
     console.log('failed to read');
   }
 
   try {
     const TX = await AsyncStorage.getItem(KEY_PERIPHERAL_TX);
-    if (TX !== null) peripheralTX = TX; 
+    if (TX !== null) {
+      peripheralTX = TX;
+    }
   } catch (e) {
     console.log('failed to read');
-  } 
+  }
 
   BleManager.startNotification(peripheralID, peripheralUUID, peripheralTX, 1)
     .then(() => {
-      console.log("Notification started");
+      console.log('Notification started');
     })
     .catch((error) => {
-      console.log(error)
-    })
-
+      console.log(error);
+    });
 }
-
-
-
-
-

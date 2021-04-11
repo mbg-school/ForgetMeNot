@@ -2,8 +2,8 @@ import {createContext} from 'react';
 
 const BleContext = createContext({
   connect: false,
-  setConnect: (connection) => {}
-})
+  setConnect: (connection) => {},
+});
 
 const BleProvider = BleContext.Provider;
 

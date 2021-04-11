@@ -2,9 +2,9 @@ import {createContext} from 'react';
 
 const StatusContext = createContext({
   statusList: {
-    list: []
+    list: [],
   },
-  setStatusList: (status) => []
+  setStatusList: (status) => [],
 });
 
 const StatusProvider = StatusContext.Provider;

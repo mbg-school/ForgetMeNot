@@ -7,15 +7,9 @@ const UserContext = createContext({
     carMake: '',
     carModel: '',
     carYear: '',
-    timeSetting: '',
   },
-  setUserData: (data) => {}
+  setUserData: (data) => {},
 });
 const UserProvider = UserContext.Provider;
 
 export {UserContext, UserProvider};
-
-
-
-
-
