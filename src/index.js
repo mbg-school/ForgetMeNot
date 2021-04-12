@@ -42,13 +42,8 @@ function App() {
     carYear: '',
   };
 
-  const status = {
+  let status = {
     list: [],
-  };
-
-  const updateStatus = (message) => {
-    const updated_list = {list: [...currentStatus.list, message]};
-    setCurrentStatus(updated_list);
   };
 
   const readData = async () => {
@@ -110,9 +105,11 @@ function App() {
         const props = {
           message: message,
         };
+        setCurrentStatus((currentStatus) => ({
+          list: [...currentStatus.list, message],
+        }));
         console.log(`Recieved ${message} for characteristic ${characteristic}`);
         MyNotification(props);
-        updateStatus(message);
       },
     );
 

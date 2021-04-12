@@ -18,14 +18,12 @@ const Item = ({item, onPress, style}) => (
 
 const StatusScreen = () => {
   const {currentStatus, setCurrentStatus} = useContext(StatusContext);
-  const {currentData, setCurrentData} = useState(currentStatus.list);
+  const currentData = [];
 
   if (currentStatus !== null) {
     currentStatus.list.map((alert) => {
       currentData.push({title: alert});
     });
-
-    setCurrentData(currentData);
   }
 
   const removeItem = (item) => {
