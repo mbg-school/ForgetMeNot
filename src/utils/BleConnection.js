@@ -3,12 +3,7 @@ import {
   SavePeripheralUUID,
   SavePeripheralTX,
   SavePeripheralRX,
-  KEY_PERIPHERAL_ID,
-  KEY_PERIPHERAL_UUID,
-  KEY_PERIPHERAL_TX,
 } from 'utils/storage';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import BleManager from 'react-native-ble-manager';
 
@@ -26,6 +21,21 @@ export function handleStopScan() {
   console.log('done scanning');
 }
 
+export function handleDisconnectedPeripheral() {
+  console.log('disconnected from esp32');
+  startScan();
+}
+
+export function handleEnableNotifications(ID, UUID, TX) {
+  BleManager.startNotification(ID, UUID, TX, 1)
+    .then(() => {
+      console.log('Notification started');
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 export function handleDiscoverPeripheral(peripheral) {
   if (peripheral.name === 'ESP32 Tech DEMO') {
     BleManager.connect(peripheral.id)
@@ -39,10 +49,16 @@ export function handleDiscoverPeripheral(peripheral) {
           /* Test read current RSSI value */
           BleManager.retrieveServices(peripheral.id).then((peripheralData) => {
             console.log('Retrieved peripheral services', peripheralData);
-            SavePeripheralID(peripheral.id);
-            SavePeripheralUUID(peripheralData.services[2].uuid);
-            SavePeripheralRX(peripheralData.characteristics[5].characteristic);
-            SavePeripheralTX(peripheralData.characteristics[4].characteristic);
+            let id = peripheral.id;
+            let uuid = peripheralData.services[2].uuid;
+            let rx = peripheralData.characteristics[5].characteristic;
+            let tx = peripheralData.characteristics[4].characteristic;
+            SavePeripheralID(id);
+            SavePeripheralUUID(uuid);
+            SavePeripheralRX(rx);
+            SavePeripheralTX(tx);
+
+            handleEnableNotifications(id, uuid, tx);
 
             BleManager.readRSSI(peripheral.id).then((rssi) => {
               console.log('Retrieved actual RSSI value', rssi);
@@ -54,50 +70,4 @@ export function handleDiscoverPeripheral(peripheral) {
         console.log('Connection error', error);
       });
   }
-}
-
-export function handleDisconnectedPeripheral() {
-  console.log('disconnected from esp32');
-  startScan();
-}
-
-export async function handleEnableNotifications() {
-  let peripheralID = null;
-  let peripheralUUID = null;
-  let peripheralTX = null;
-
-  try {
-    const ID = await AsyncStorage.getItem(KEY_PERIPHERAL_ID);
-    if (ID !== null) {
-      peripheralID = ID;
-    }
-  } catch (e) {
-    console.log('failed to read');
-  }
-
-  try {
-    const UUID = await AsyncStorage.getItem(KEY_PERIPHERAL_UUID);
-    if (UUID !== null) {
-      peripheralUUID = UUID;
-    }
-  } catch (e) {
-    console.log('failed to read');
-  }
-
-  try {
-    const TX = await AsyncStorage.getItem(KEY_PERIPHERAL_TX);
-    if (TX !== null) {
-      peripheralTX = TX;
-    }
-  } catch (e) {
-    console.log('failed to read');
-  }
-
-  BleManager.startNotification(peripheralID, peripheralUUID, peripheralTX, 1)
-    .then(() => {
-      console.log('Notification started');
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 }

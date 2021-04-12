@@ -24,7 +24,6 @@ import {
   handleDiscoverPeripheral,
   handleStopScan,
   handleDisconnectedPeripheral,
-  handleEnableNotifications,
 } from 'utils/BleConnection';
 
 import BleManager from 'react-native-ble-manager';
