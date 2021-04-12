@@ -5,6 +5,7 @@ import {StatusProvider} from 'utils/StatusContext';
 import {BleProvider} from 'utils/BleContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {bytesToString} from 'convert-string';
+import {MyNotification} from 'utils/PushNotifications';
 import {
   NativeModules,
   NativeEventEmitter,
@@ -41,7 +42,7 @@ function App() {
   };
 
   const status = {
-    list: ['first alert', 'second alert'],
+    list: [],
   };
 
   const readData = async () => {
@@ -100,7 +101,13 @@ function App() {
       ({value, peripheral, characteristic, service}) => {
         // Convert bytes array to string
         const message = bytesToString(value);
+        const props = {
+          message: message,
+        };
+        const updated_list = {list: [...currentStatus.list, message]};
         console.log(`Recieved ${message} for characteristic ${characteristic}`);
+        MyNotification(props);
+        setCurrentStatus(updated_list);
       },
     );
 
@@ -137,9 +144,12 @@ function App() {
         'BleManagerDisconnectPeripheral',
         handleDisconnectedPeripheral,
       );
-      bleManagerEmitter.addListener(
+      bleManagerEmitter.removeListener(
         'BleManagerConnectPeripheral',
         handleConnectedPeripheral,
+      );
+      bleManagerEmitter.removeListener(
+        'BleManagerDidUpdateValueForCharacteristic',
       );
     };
   }, []);
