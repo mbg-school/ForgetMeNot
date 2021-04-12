@@ -3,9 +3,13 @@ import {
   SavePeripheralUUID,
   SavePeripheralTX,
   SavePeripheralRX,
+  KEY_PERIPHERAL_ID,
+  KEY_PERIPHERAL_UUID,
+  KEY_PERIPHERAL_TX,
 } from 'utils/storage';
 
 import BleManager from 'react-native-ble-manager';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function startScan() {
   BleManager.scan([], 300, true)
@@ -37,7 +41,7 @@ export function handleEnableNotifications(ID, UUID, TX) {
 }
 
 export function handleDiscoverPeripheral(peripheral) {
-  if (peripheral.name === 'ESP32 Tech DEMO') {
+  if (peripheral.name === 'ESP32') {
     BleManager.connect(peripheral.id)
       .then(() => {
         peripheral.connected = true;
@@ -70,4 +74,30 @@ export function handleDiscoverPeripheral(peripheral) {
         console.log('Connection error', error);
       });
   }
+}
+
+export async function handleStopNotification() {
+  let id = null;
+  let uuid = null;
+  let tx = null;
+
+  try {
+    const ID = await AsyncStorage.getItem(KEY_PERIPHERAL_ID);
+    const UUID = await AsyncStorage.getItem(KEY_PERIPHERAL_UUID);
+    const TX = await AsyncStorage.getItem(KEY_PERIPHERAL_TX);
+
+    id = ID;
+    uuid = UUID;
+    tx = TX;
+  } catch (e) {
+    console.log(e);
+  }
+
+  BleManager.stopNotification(id, uuid, tx)
+    .then(() => {
+      console.log('notification stopped');
+    })
+    .catch((e) => {
+      console.log('error');
+    });
 }

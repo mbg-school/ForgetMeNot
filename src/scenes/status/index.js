@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {StatusContext} from 'utils/StatusContext';
 import {
   Text,
@@ -18,12 +18,14 @@ const Item = ({item, onPress, style}) => (
 
 const StatusScreen = () => {
   const {currentStatus, setCurrentStatus} = useContext(StatusContext);
-  const currentData = [];
+  const {currentData, setCurrentData} = useState(currentStatus.list);
 
   if (currentStatus !== null) {
     currentStatus.list.map((alert) => {
       currentData.push({title: alert});
     });
+
+    setCurrentData(currentData);
   }
 
   const removeItem = (item) => {
