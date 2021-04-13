@@ -25,6 +25,7 @@ import {
   handleDiscoverPeripheral,
   handleStopScan,
   handleDisconnectedPeripheral,
+  handleStopNotification,
 } from 'utils/BleConnection';
 
 import BleManager from 'react-native-ble-manager';
@@ -41,7 +42,7 @@ function App() {
     carYear: '',
   };
 
-  const status = {
+  let status = {
     list: [],
   };
 
@@ -104,10 +105,11 @@ function App() {
         const props = {
           message: message,
         };
-        const updated_list = {list: [...currentStatus.list, message]};
+        setCurrentStatus((currentStatus) => ({
+          list: [...currentStatus.list, message],
+        }));
         console.log(`Recieved ${message} for characteristic ${characteristic}`);
         MyNotification(props);
-        setCurrentStatus(updated_list);
       },
     );
 
@@ -150,6 +152,7 @@ function App() {
       );
       bleManagerEmitter.removeListener(
         'BleManagerDidUpdateValueForCharacteristic',
+        handleStopNotification,
       );
     };
   }, []);

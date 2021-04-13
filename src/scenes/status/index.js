@@ -21,8 +21,12 @@ const StatusScreen = () => {
   const currentData = [];
 
   if (currentStatus !== null) {
+    let unique_list = [];
     currentStatus.list.map((alert) => {
-      currentData.push({title: alert});
+      if (!unique_list.includes(alert)) {
+        currentData.push({title: alert});
+        unique_list = [...unique_list, alert];
+      }
     });
   }
 
