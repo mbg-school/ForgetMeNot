@@ -23,7 +23,7 @@ const StatusScreen = () => {
   if (currentStatus !== null) {
     let unique_list = [];
     currentStatus.list.map((alert) => {
-      if (!unique_list.includes(alert)) {
+      if (!unique_list.includes(alert) && alert !== 'You have Connected') {
         currentData.push({title: alert});
         unique_list = [...unique_list, alert];
       }

@@ -102,14 +102,18 @@ function App() {
       ({value, peripheral, characteristic, service}) => {
         // Convert bytes array to string
         const message = bytesToString(value);
-        const props = {
-          message: message,
-        };
-        setCurrentStatus((currentStatus) => ({
-          list: [...currentStatus.list, message],
-        }));
-        console.log(`Recieved ${message} for characteristic ${characteristic}`);
-        MyNotification(props);
+        if (message !== 'You have Connected') {
+          const props = {
+            message: message,
+          };
+          setCurrentStatus((currentStatus) => ({
+            list: [...currentStatus.list, message],
+          }));
+          console.log(
+            `Recieved ${message} for characteristic ${characteristic}`,
+          );
+          MyNotification(props);
+        }
       },
     );
 
