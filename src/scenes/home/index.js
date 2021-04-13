@@ -19,8 +19,11 @@ const HomeScreen = ({navigation}) => {
   let status_length = currentStatus.list.length;
   let isStatus = false;
 
-  if (status_length !== 0) {
+  if (status_length !== 0 && status_length <= 3) {
     status = 'You have ' + status_length + ' alerts!';
+    isStatus = true;
+  } else if (status_length > 3) {
+    status = 'You have 3 alerts!';
     isStatus = true;
   }
 
