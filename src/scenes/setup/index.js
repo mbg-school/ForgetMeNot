@@ -1,16 +1,11 @@
 import React, {useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {UserContext} from 'utils/UserDataContext';
 import {SaveData} from 'utils/storage';
 import {Styles} from 'styles/index';
+import {Button, ThemeProvider, Input, Header} from 'react-native-elements';
+import {Theme} from 'atoms/index';
 
 const SetupScreen = ({navigation}) => {
   React.useEffect(() =>
@@ -43,37 +38,32 @@ const SetupScreen = ({navigation}) => {
 
   let input_props1 = {
     placeholder: 'First Name',
-    style: styles.text_input,
     onChangeText: (name) => setFirstName(name),
   };
 
   let input_props2 = {
     placeholder: 'Last Name',
-    style: styles.text_input,
     onChangeText: (name) => setLastName(name),
   };
 
   let input_props3 = {
     placeholder: 'Car Make',
-    style: styles.text_input,
     onChangeText: (make) => setCarMake(make),
   };
 
   let input_props4 = {
     placeholder: 'Car Model',
-    style: styles.text_input,
     onChangeText: (model) => setCarModel(model),
   };
 
   let input_props5 = {
     placeholder: 'Car Year',
-    style: styles.text_input,
     onChangeText: (year) => setCarYear(year),
   };
 
   const checkValid = () => {
-    for (value in userData) {
-      if (userData[value] === '') {
+    for (value in data) {
+      if (data[value] === '') {
         valid = false;
       }
       break;
@@ -106,15 +96,20 @@ const SetupScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.first_header}>General Information</Text>
-      <TextInput {...input_props1} />
-      <TextInput {...input_props2} />
-      <TextInput {...input_props3} />
-      <TextInput {...input_props4} />
-      <TextInput {...input_props5} />
-      <TouchableOpacity style={styles.button} onPress={handlePress}>
-        <Text style={styles.button_text}>Submit</Text>
-      </TouchableOpacity>
+      <Header
+        placement="left"
+        centerComponent={{text: 'User Information', style: {fontSize: 20}}}
+      />
+      <Text>{'\n'}</Text>
+      <Input {...input_props1} />
+      <Input {...input_props2} />
+      <Input {...input_props3} />
+      <Input {...input_props4} />
+      <Input {...input_props5} />
+      <Text>{'\n'}</Text>
+      <ThemeProvider theme={Theme}>
+        <Button title="Next Page" onPress={handlePress} />
+      </ThemeProvider>
     </View>
   );
 };
@@ -126,17 +121,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   first_header: {
-    alignSelf: 'flex-start',
-    margin: 10,
-    marginLeft: 45,
-    fontWeight: 'bold',
     fontSize: 20,
-  },
-  text_input: {
-    borderWidth: 1,
-    borderColor: 'black',
-    width: 300,
-    marginVertical: 10,
   },
   button: {
     ...Styles.ButtonStyle,
