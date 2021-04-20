@@ -1,6 +1,5 @@
 import React from 'react';
 import HomeScreen from 'scenes/home';
-import StatusScreen from 'scenes/status';
 import AboutScreen from 'scenes/about';
 import ConfigurationScreen from 'scenes/configuration';
 import SetupScreen from 'scenes/setup';
@@ -54,7 +53,6 @@ const GeneralFlowNavigator = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Status" component={StatusScreen} />
       <Tab.Screen name="More" component={MoreNavigator} />
     </Tab.Navigator>
   );

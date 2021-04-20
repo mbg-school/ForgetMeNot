@@ -1,23 +1,12 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {StatusContext} from 'utils/StatusContext';
-import {
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Alert,
-} from 'react-native';
+import {ListItem} from 'react-native-elements';
+import {StyleSheet, View, Alert} from 'react-native';
 import {Styles} from 'styles/index';
-
-const Item = ({item, onPress, style}) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.button_text}>{item.title}</Text>
-  </TouchableOpacity>
-);
 
 const StatusScreen = () => {
   const {currentStatus, setCurrentStatus} = useContext(StatusContext);
+  const [expanded, setExpanded] = useState(false);
   const currentData = [];
 
   if (currentStatus !== null) {
@@ -60,26 +49,33 @@ const StatusScreen = () => {
       },
     ]);
 
-  const renderItem = ({item}) => {
-    return <Item item={item} onPress={() => handlePress(item)} />;
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Current Alerts</Text>
-      <FlatList
-        data={currentData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.title}
-      />
+    <View>
+      <ListItem.Accordion
+        content={
+          <>
+            <ListItem.Content>
+              <ListItem.Title>Current Alerts</ListItem.Title>
+            </ListItem.Content>
+          </>
+        }
+        isExpanded={expanded}
+        onPress={() => {
+          setExpanded(!expanded);
+        }}>
+        {currentData.map((l, i) => (
+          <ListItem key={i} onPress={() => handlePress(l)} bottomDivider>
+            <ListItem.Content>
+              <ListItem.Title>{l.title}</ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        ))}
+      </ListItem.Accordion>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   item: {
     padding: 10,
     borderBottomColor: 'black',
@@ -90,10 +86,8 @@ const styles = StyleSheet.create({
     ...Styles.ButtonTextSyle,
     fontSize: 16,
   },
-  header: {
-    ...Styles.HeaderStyle,
-    marginTop: 20,
-    fontSize: 32,
+  button: {
+    backgroundColor: 'red',
   },
 });
 

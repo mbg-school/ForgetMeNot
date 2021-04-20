@@ -43,7 +43,7 @@ function App() {
   };
 
   let status = {
-    list: [],
+    list: ['First Alert', 'Second Alert'],
   };
 
   const readData = async () => {

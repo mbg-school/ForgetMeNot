@@ -1,9 +1,11 @@
 import React, {useContext} from 'react';
 import {StatusContext} from 'utils/StatusContext';
 import {UserContext} from 'utils/UserDataContext';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {Styles} from 'styles/index';
 import {HorizontalLine} from 'atoms/index';
+import StatusScreen from 'scenes/status';
+import {Header} from 'react-native-elements';
 
 const HomeScreen = ({navigation}) => {
   const {currentStatus} = useContext(StatusContext);
@@ -15,44 +17,34 @@ const HomeScreen = ({navigation}) => {
     });
   });
 
-  let status = 'No current alerts.';
   let status_length = currentStatus.list.length;
   let isStatus = false;
 
-  if (status_length !== 0 && status_length <= 3) {
-    status = 'You have ' + status_length + ' alerts!';
+  if (status_length > 0) {
     isStatus = true;
-  } else if (status_length > 3) {
-    status = 'You have 3 alerts!';
-    isStatus = true;
+  } else {
+    isStatus = false;
   }
-
-  const RespondButton = () => {
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Status')}
-        style={styles.button}>
-        <Text style={styles.button_text}>Respond </Text>
-      </TouchableOpacity>
-    );
-  };
 
   function CheckStatus() {
     if (isStatus) {
-      return <RespondButton />;
+      return <StatusScreen />;
     } else {
-      return <View />;
+      return <Text>No Current Alerts.</Text>;
     }
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello, {userData.firstName}!</Text>
+      <Header
+        placement="left"
+        centerComponent={{
+          text: `${userData.firstName}' Home Page`,
+          style: {fontSize: 20, marginLeft: -15},
+        }}
+      />
       <Text style={styles.header}>Alerts</Text>
-      <View style={styles.row}>
-        <Text style={styles.text}>{status}</Text>
-        <CheckStatus />
-      </View>
+      <CheckStatus />
       <HorizontalLine style={styles.line} />
       <Text style={styles.header}>General Information</Text>
       <HorizontalLine style={styles.line} />
@@ -64,16 +56,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    marginLeft: 10,
   },
   title: {
     flex: 0.15,
     ...Styles.HeaderStyle,
     //alignSelf: 'center'
+    marginLeft: 10,
   },
   header: {
     ...Styles.HeaderStyle,
     marginVertical: 10,
+    marginLeft: 10,
   },
   row: {
     flexDirection: 'row',
