@@ -1,7 +1,4 @@
-import NavigationButton from './navigation_button';
 import HorizontalLine from './horizontal_line';
+import Theme from './custom_button';
 
-export {
-  NavigationButton,
-  HorizontalLine
-};
+export {HorizontalLine, Theme};

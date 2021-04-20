@@ -1,17 +1,32 @@
 import React, {useContext} from 'react';
 import {BleContext} from 'utils/BleContext';
-import {View, Text, StyleSheet, Image, Button} from 'react-native';
-import {HorizontalLine} from 'atoms/index.js';
-import {Colors, Styles} from 'styles/index.js';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import {HorizontalLine, Theme} from 'atoms/index.js';
+import {Colors} from 'styles/index.js';
+import {Button, ThemeProvider} from 'react-native-elements';
 
 const WelcomeScreen = ({navigation}) => {
   const {bleConnection} = useContext(BleContext);
 
   const ShowButton = () => {
-    if (bleConnection) {
-      return <Button title="next page" onPress={handlePress} />;
+    if (!bleConnection) {
+      return (
+        <ThemeProvider theme={Theme}>
+          <Button title="Next Page" onPress={handlePress} disabled={false} />
+        </ThemeProvider>
+      );
+    } else {
+      return (
+        <ThemeProvider theme={Theme}>
+          <Button
+            title="Next Page"
+            onPress={handlePress}
+            disabled={true}
+            loading={true}
+          />
+        </ThemeProvider>
+      );
     }
-    return null;
   };
 
   const handlePress = () => {
@@ -35,7 +50,7 @@ const WelcomeScreen = ({navigation}) => {
         Plug in the provided OBDII module into the OBDII port. The port can be
         found in the bottom left area of the steering wheel. A green light on
         the module will indicate it is working. Once your phone is connected to
-        the OBDII, a button will appear to take you to the next page.
+        the OBDII, a button will appear to take you to the next page. {'\n'}
       </Text>
       <ShowButton />
     </View>
@@ -61,21 +76,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 50,
     backgroundColor: 'transparent',
-  },
-  button: {
-    alignItems: 'center',
-    marginTop: 30,
-    borderWidth: 1,
-    width: 300,
-    height: 50,
-    backgroundColor: Colors.SECONDARY,
-  },
-  button_text: {
-    ...Styles.ButtonTextStyle,
-    fontSize: 16,
-  },
-  button_continue: {
-    width: 100,
   },
   inst_text: {
     textAlign: 'center',
