@@ -41,7 +41,7 @@ export function handleEnableNotifications(ID, UUID, TX) {
 }
 
 export function handleDiscoverPeripheral(peripheral) {
-  if (peripheral.name === 'ESP32') {
+  if (peripheral.name === 'ESP32 Tech DEMO') {
     BleManager.connect(peripheral.id)
       .then(() => {
         peripheral.connected = true;
