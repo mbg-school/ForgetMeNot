@@ -4,13 +4,19 @@ import {useRoute} from '@react-navigation/native';
 import {UserContext} from 'utils/UserDataContext';
 import {SaveData} from 'utils/storage';
 import {Styles} from 'styles/index';
-import {Button, ThemeProvider, Input, Header} from 'react-native-elements';
+import {
+  Button,
+  ThemeProvider,
+  Input,
+  Header,
+  Icon,
+} from 'react-native-elements';
 import {Theme} from 'atoms/index';
 
 const SetupScreen = ({navigation}) => {
   React.useEffect(() =>
     navigation.addListener('beforeRemove', (e) => {
-      if (prev === 'Parse') {
+      if (prev === 'Welcome') {
         e.preventDefault();
       }
     }),
@@ -84,20 +90,37 @@ const SetupScreen = ({navigation}) => {
     SaveData(data);
     checkValid();
     if (valid) {
-      if (prev === 'Parse') {
-        navigation.navigate('Home');
-      } else {
-        navigation.navigate('Configuration');
-      }
+      navigation.navigate('Home');
     } else {
       Alert.alert('1 or more inputs left blank');
+    }
+  };
+
+  const handleArrow = () => {
+    navigation.navigate('Home');
+  };
+
+  const ButtonConfig = () => {
+    if (prev === 'Welcome') {
+      return <Button title="Next Page" onPress={handlePress} />;
+    } else {
+      return <Button title="Submit" onPress={handlePress} />;
+    }
+  };
+
+  const CheckIcon = () => {
+    if (prev !== 'Welcome') {
+      return <Icon name="arrow-left" onPress={handleArrow} />;
+    } else {
+      return null;
     }
   };
 
   return (
     <View style={styles.container}>
       <Header
-        placement="left"
+        placement="center"
+        leftComponent={<CheckIcon />}
         centerComponent={{text: 'User Information', style: {fontSize: 20}}}
       />
       <Text>{'\n'}</Text>
@@ -108,7 +131,7 @@ const SetupScreen = ({navigation}) => {
       <Input {...input_props5} />
       <Text>{'\n'}</Text>
       <ThemeProvider theme={Theme}>
-        <Button title="Next Page" onPress={handlePress} />
+        <ButtonConfig />
       </ThemeProvider>
     </View>
   );

@@ -1,50 +1,44 @@
 import React from 'react';
-import {Text, FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Styles} from 'styles/index';
-
-const Data = [
-  {
-    title: 'Configuration',
-    button_name: 'Profile',
-  },
-  {
-    title: 'About',
-    button_name: 'About',
-  },
-];
-
-const Item = ({item, onPress, style}) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.button_text}>{item.button_name}</Text>
-  </TouchableOpacity>
-);
+import {ListItem} from 'react-native-elements';
 
 const MoreScreen = ({navigation}) => {
-  const renderItem = ({item}) => {
-    return <Item item={item} onPress={() => navigation.navigate(item.title)} />;
+  const Data = [
+    {
+      title: 'Setup',
+      button_name: 'Edit Profile',
+    },
+    {
+      title: 'About',
+      button_name: 'About',
+    },
+  ];
+
+  const handlePress = (item) => {
+    if (item.title === 'Setup') {
+      navigation.navigate(item.title, {name: 'Home'});
+    } else {
+      navigation.navigate(item.title);
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={Data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.title}
-      />
+    <View>
+      {Data.map((l, i) => (
+        <ListItem key={i} onPress={() => handlePress(l)} bottomDivider>
+          <ListItem.Content>
+            <ListItem.Title style={styles.list}>{l.button_name}</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      ))}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  item: {
-    padding: 10,
-    backgroundColor: '#FFFACD',
-    borderColor: 'black',
-    borderWidth: 1,
-    marginTop: 10,
+  list: {
+    fontSize: 20,
   },
   button_text: {
     fontSize: 24,

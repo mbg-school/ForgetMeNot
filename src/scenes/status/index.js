@@ -1,8 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {StatusContext} from 'utils/StatusContext';
-import {ListItem} from 'react-native-elements';
+import {ListItem, Badge} from 'react-native-elements';
 import {StyleSheet, View, Alert} from 'react-native';
-import {Styles} from 'styles/index';
 
 const StatusScreen = () => {
   const {currentStatus, setCurrentStatus} = useContext(StatusContext);
@@ -55,19 +54,23 @@ const StatusScreen = () => {
         content={
           <>
             <ListItem.Content>
-              <ListItem.Title>Current Alerts</ListItem.Title>
+              <ListItem.Title style={styles.accordian}>
+                YOU HAVE ALERTS!
+              </ListItem.Title>
             </ListItem.Content>
           </>
         }
         isExpanded={expanded}
         onPress={() => {
           setExpanded(!expanded);
-        }}>
+        }}
+        bottomDivider>
         {currentData.map((l, i) => (
           <ListItem key={i} onPress={() => handlePress(l)} bottomDivider>
             <ListItem.Content>
               <ListItem.Title>{l.title}</ListItem.Title>
             </ListItem.Content>
+            <Badge status="error" />
           </ListItem>
         ))}
       </ListItem.Accordion>
@@ -76,14 +79,10 @@ const StatusScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  item: {
-    padding: 10,
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-    marginTop: 10,
+  accordian: {
+    fontSize: 20,
   },
   button_text: {
-    ...Styles.ButtonTextSyle,
     fontSize: 16,
   },
   button: {

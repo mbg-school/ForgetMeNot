@@ -1,11 +1,11 @@
 import React, {useContext} from 'react';
 import {StatusContext} from 'utils/StatusContext';
 import {UserContext} from 'utils/UserDataContext';
-import {View, Text, StyleSheet} from 'react-native';
-import {Styles} from 'styles/index';
-import {HorizontalLine} from 'atoms/index';
+import {View, StyleSheet} from 'react-native';
 import StatusScreen from 'scenes/status';
-import {Header} from 'react-native-elements';
+import MoreScreen from 'scenes/more';
+import ConfigurationScreen from 'scenes/configuration';
+import {Header, ListItem, Badge, Divider} from 'react-native-elements';
 
 const HomeScreen = ({navigation}) => {
   const {currentStatus} = useContext(StatusContext);
@@ -30,24 +30,30 @@ const HomeScreen = ({navigation}) => {
     if (isStatus) {
       return <StatusScreen />;
     } else {
-      return <Text>No Current Alerts.</Text>;
+      return (
+        <ListItem bottomDivider>
+          <ListItem.Content>
+            <ListItem.Title>No Current Alerts.</ListItem.Title>
+          </ListItem.Content>
+          <Badge status="success" />
+        </ListItem>
+      );
     }
   }
 
   return (
     <View style={styles.container}>
       <Header
-        placement="left"
+        placement="center"
         centerComponent={{
-          text: `${userData.firstName}' Home Page`,
-          style: {fontSize: 20, marginLeft: -15},
+          text: `${userData.firstName}'s Home Page`,
+          style: {fontSize: 24, marginLeft: -15, fontWeight: 'bold'},
         }}
       />
-      <Text style={styles.header}>Alerts</Text>
       <CheckStatus />
-      <HorizontalLine style={styles.line} />
-      <Text style={styles.header}>General Information</Text>
-      <HorizontalLine style={styles.line} />
+      <MoreScreen navigation={navigation} />
+      <Divider style={styles.divider} />
+      <ConfigurationScreen />
     </View>
   );
 };
@@ -57,37 +63,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
   },
-  title: {
-    flex: 0.15,
-    ...Styles.HeaderStyle,
-    //alignSelf: 'center'
-    marginLeft: 10,
-  },
-  header: {
-    ...Styles.HeaderStyle,
-    marginVertical: 10,
-    marginLeft: 10,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  button: {
-    ...Styles.ButtonStyle,
-    width: 100,
-    marginLeft: 10,
-  },
-  button_text: {
-    ...Styles.ButtonTextStyle,
+  divider: {
+    height: 5,
+    marginTop: 30,
+    marginBottom: 30,
   },
   text: {
-    ...Styles.TextSyle,
-    marginTop: 10,
+    marginLeft: 10,
     fontSize: 16,
-  },
-  line: {
-    marginLeft: 0,
-    borderWidth: 0.5,
-    width: 370,
   },
 });
 

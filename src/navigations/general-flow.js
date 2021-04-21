@@ -1,32 +1,19 @@
 import React from 'react';
 import HomeScreen from 'scenes/home';
 import AboutScreen from 'scenes/about';
-import ConfigurationScreen from 'scenes/configuration';
 import SetupScreen from 'scenes/setup';
-import MoreScreen from 'scenes/more';
-
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 
-const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const MoreNavigator = () => {
+const HomeNavigator = () => {
   return (
     <Stack.Navigator headerMode="screen">
       <Stack.Screen
-        name="More"
-        component={MoreScreen}
+        name="Home"
+        component={HomeScreen}
         options={{
           headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Configuration"
-        component={ConfigurationScreen}
-        options={{
-          title: 'Your Profile',
-          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -42,20 +29,20 @@ const MoreNavigator = () => {
         component={SetupScreen}
         options={{
           title: 'Settings',
-          headerTitleAlign: 'center',
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
   );
 };
 
-const GeneralFlowNavigator = () => {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="More" component={MoreNavigator} />
-    </Tab.Navigator>
-  );
-};
+// const GeneralFlowNavigator = () => {
+//   return (
+//     <Tab.Navigator>
+//       <Tab.Screen name="Home" component={HomeScreen} />
+//       <Tab.Screen name="More" component={MoreNavigator} />
+//     </Tab.Navigator>
+//   );
+// };
 
-export default GeneralFlowNavigator;
+export default HomeNavigator;

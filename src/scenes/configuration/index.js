@@ -1,60 +1,75 @@
 import React, {useContext} from 'react';
 import {UserContext} from 'utils/UserDataContext';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {Styles} from 'styles/index';
+import {View, Text, StyleSheet} from 'react-native';
+import {ListItem} from 'react-native-elements';
 
-const ConfigurationScreen = ({navigation}) => {
+const ConfigurationScreen = () => {
   const {userData} = useContext(UserContext);
 
-  const handlePress = () => {
-    navigation.navigate('Setup', {name: 'Configuration'});
-  };
+  const Data = [
+    {
+      label: 'First Name:',
+      title: userData.firstName,
+    },
+    {
+      label: 'Last Name:',
+      title: userData.lastName,
+    },
+    {
+      label: 'Car Make:',
+      title: userData.carMake,
+    },
+    {
+      label: 'Car Model:',
+      title: userData.carModel,
+    },
+    {
+      label: 'Car Year:',
+      title: userData.carYear,
+    },
+  ];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>
-        {userData.firstName} {userData.lastName}{' '}
-      </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Car Make: </Text>
-        {userData.carMake}
-      </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Car Model: </Text>
-        {userData.carModel}
-      </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Car Year: </Text>
-        {userData.carYear} {'\n'}
-      </Text>
-      <TouchableOpacity style={styles.button} onPress={handlePress}>
-        <Text style={styles.button_text}>Edit Settings</Text>
-      </TouchableOpacity>
+    // <View style={styles.container}>
+    //   <Text style={styles.header}>User Information</Text>
+    //   <Text style={styles.text}>
+    //     <Text style={styles.label}>Car Make: </Text>
+    //     {userData.carMake}
+    //   </Text>
+    //   <Text style={styles.text}>
+    //     <Text style={styles.label}>Car Model: </Text>
+    //     {userData.carModel}
+    //   </Text>
+    //   <Text style={styles.text}>
+    //     <Text style={styles.label}>Car Year: </Text>
+    //     {userData.carYear} {'\n'}
+    //   </Text>
+    // </View>
+    <View>
+      <Text style={styles.header}>User Profile</Text>
+      {Data.map((l, i) => (
+        <ListItem key={i} bottomDivider>
+          <ListItem.Content>
+            <ListItem.Title>
+              {l.label} {l.title}
+            </ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      ))}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 20,
-  },
   header: {
-    ...Styles.HeaderStyle,
-    flex: 0.1,
+    fontSize: 24,
+    marginBottom: 20,
+    alignSelf: 'center',
   },
   text: {
-    fontSize: 16,
-    marginVertical: 5,
-    ...Styles.TextStyle,
-  },
-  button: {
-    ...Styles.ButtonStyle,
-    marginTop: 10,
-    width: 250,
-  },
-  button_text: {
-    ...Styles.ButtonTextStyle,
+    fontSize: 20,
+    marginBottom: 5,
+    marginLeft: 10,
   },
   label: {
     fontWeight: 'bold',
