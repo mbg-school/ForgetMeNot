@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 5,
     marginTop: 30,
-    marginBottom: 30,
+    marginBottom: 20,
   },
   text: {
     marginLeft: 10,

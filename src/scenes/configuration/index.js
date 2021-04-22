@@ -30,21 +30,6 @@ const ConfigurationScreen = () => {
   ];
 
   return (
-    // <View style={styles.container}>
-    //   <Text style={styles.header}>User Information</Text>
-    //   <Text style={styles.text}>
-    //     <Text style={styles.label}>Car Make: </Text>
-    //     {userData.carMake}
-    //   </Text>
-    //   <Text style={styles.text}>
-    //     <Text style={styles.label}>Car Model: </Text>
-    //     {userData.carModel}
-    //   </Text>
-    //   <Text style={styles.text}>
-    //     <Text style={styles.label}>Car Year: </Text>
-    //     {userData.carYear} {'\n'}
-    //   </Text>
-    // </View>
     <View>
       <Text style={styles.header}>User Profile</Text>
       {Data.map((l, i) => (
